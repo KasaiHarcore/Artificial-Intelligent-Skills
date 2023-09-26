@@ -2,7 +2,7 @@
 
 What I'm trying to do here is summaries everything I know about Machine Learning
 
-The project included 3 parts:
+The project included three parts:
 - Basic concepts about each model
 - Formula and some using advantage
 - Coding with and without library
@@ -11,4 +11,4 @@ Because the wild world of Machine Learning is so big, I can't cover all of it, s
 
 Some code process can be wrong because I'm still learning, so if you find any mistake, feel free to fix it.
 
-**All the code is not completed yet, I will update it as soon as possible**
+**All the code is not completed yet, I will update it as soon as possible.**
