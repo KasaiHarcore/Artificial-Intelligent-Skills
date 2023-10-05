@@ -1,15 +1,15 @@
 # 📓 Before dive into this
 
-What I'm trying to do here is summaries everything I know about artificial intelligence. I find out that all the learning sources do not fully give me what I need, so I scrape all the internet and all my knowledge, and then we have this.
+What I'm trying to do here is summarize everything I know about artificial intelligence. I find out that all the learning sources do not fully give me what I need, so I scrape all the internet and all my knowledge, and then we have this.
 
 The project included:
-- What is needed to be a A.I Engineer or A.I Researcher
+- What is needed to be an A.I Engineer or A.I Researcher
 - Basic concepts, important parts
 - Formula and bunch of math
 - Coding with and without library
 - Diving deep into the world of A.I
 
-Because the wild world of A.I is so big, I can't cover all of it, so I will focus on the most popular models and some of the most important concepts. Also, it can contain some of my personal opinion, so if you have any questions, feel free to contact me or pull request.
+Because the wild world of A.I is so big, I can't cover all of it, so I will focus on the most popular models and some of the most important concepts. Also, it can contain some of my personal opinion, so if you have any questions, feel free to contact me or pull a request.
 
 # 📖 Books
 - It covering a wide range of mathematical algorithms and coding. I will provide a detailed book to read below:
@@ -34,6 +34,8 @@ Because the wild world of A.I is so big, I can't cover all of it, so I will focu
     - Leetcode, Hackerrank and Kaggle are good places to practice your coding skills.
     - Feel free to use ChatGPT, Bard, Claude AI if you get stuck in the coding part.
  
-Some code processes can be wrong because I'm still learning, so if you find any mistakes, feel free to fix them.
+Some code processes can be wrong because I'm still learning, so if you find any mistakes, feel free to fix them. I'll update everything, as I still have interest in this major.
 
 **All the code is not completed yet, I will update it as soon as possible.**
+
+# FOR OUR BIG ARTIFICIAL INTELLIGENT COMMUNITY
