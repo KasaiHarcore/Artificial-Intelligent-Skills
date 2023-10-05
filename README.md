@@ -1,10 +1,11 @@
 # 📓 Before dive into this
 
-What I'm trying to do here is summaries everything I know about Machine Learning
+What I'm trying to do here is summaries everything I know about artificial intelligence. I find out that all the learning sources do not fully give me what I need, so I scrape all the internet and all my knowledge, and then we have this.
 
-The project included three parts:
-- Basic concepts about each model
-- Formula and some using advantage
+The project included:
+- What is needed to be a A.I Engineer or A.I Researcher
+- Basic concepts, important parts
+- Formula and bunch of math
 - Coding with and without library
 - Diving deep into the world of A.I
 
