@@ -12,7 +12,6 @@ Because the wild world of A.I is so big, I can't cover all of it, so I will focu
 
 # 📖 Books
 - It covering a wide range of mathematical algorithms and coding. I will provide a detailed book to read below:
-    - https://github.com/hungpham3112/Books (My friend Github)
     - https://d2l.ai/index.html
     - https://bookshelf.vitalsource.com
 - Learning Source:
