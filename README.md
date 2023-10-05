@@ -1,6 +1,6 @@
 # 📓 Before dive into this
 
-What I'm trying to do here is summarize everything I know about artificial intelligence. I find out that all the learning sources do not fully give me what I need, so I scrape all the internet and all my knowledge, and then we have this.
+What I'm trying to do here is summarize everything I know about artificial intelligence. I find out that all the learning sources do not fully give me what I need, so I scrape the internet with all my knowledge, and then I came to this
 
 The project included:
 - What is needed to be an A.I Engineer or A.I Researcher
