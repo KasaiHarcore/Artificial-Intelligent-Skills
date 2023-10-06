@@ -20,6 +20,8 @@ Because the wild world of A.I is so big, I can't cover all of it, so I will focu
     - https://www.coursera.org
     - https://paperswithcode.com
     - https://www.paperspace.com
+    - https://www.w3schools.com
+    - https://www.geeksforgeeks.org
 - Data Source:
     - https://data.gov
     - https://data.un.org
