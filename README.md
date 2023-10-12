@@ -11,6 +11,10 @@ The project included:
 
 Because the wild world of A.I is so big, I can't cover all of it, so I will focus on the most popular models and some of the most important concepts. Also, it can contain some of my personal opinion, so if you have any questions, feel free to contact me or pull a request.
 
+
+- If you new to this then take a look at this roadmap:
+    - https://i.am.ai/roadmap/
+
 # 📖 Books
 - It covering a wide range of mathematical algorithms and coding. I will provide a detailed book to read below:
     - https://d2l.ai/index.html
