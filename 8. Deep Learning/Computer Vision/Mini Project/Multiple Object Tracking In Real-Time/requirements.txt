@@ -1,7 +1,11 @@
 # Base ----------------------------------------
-matplotlib>=3.2.2
-numpy>=1.18.5
-opencv-python>=4.1.1
-lapx>=0.5.3
-
-
+matplotlib
+numpy
+opencv-python
+lapx
+torchinfo
+ultralytics
+torch
+pillow
+scipy
+torchvision
