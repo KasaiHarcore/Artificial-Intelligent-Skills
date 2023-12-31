@@ -1,3 +1,4 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "julia.environmentPath": "c:\\Users\\My computer\\Downloads\\School\\Personal Education\\Github\\Artificial-Intelligent-Skills"
 }
