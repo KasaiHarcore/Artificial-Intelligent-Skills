@@ -1,4 +1,11 @@
 # For regression task
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Calculate manhattan distance (can be fixed to p = 2 for Euclidean distance)
+def manhattan_distance(x1, x2, p=1):
+    return np.sum(np.abs(x1 - x2) ** p) ** (1 / p)
+
 class KNNRegressor:
     def __init__(self, K=3):
         self.K = K
