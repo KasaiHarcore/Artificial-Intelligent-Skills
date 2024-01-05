@@ -2,6 +2,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+x = np.array([[1, 2], [1.5, 1.8], [5, 8], [8, 8], [1, 0.6], [9, 11]])
+y = np.array([0, 0, 1, 1, 0, 1])  # Example labels for your data
+
 # Calculate manhattan distance (can be fixed to p = 2 for Euclidean distance)
 def manhattan_distance(x1, x2, p=1):
     return np.sum(np.abs(x1 - x2) ** p) ** (1 / p)
