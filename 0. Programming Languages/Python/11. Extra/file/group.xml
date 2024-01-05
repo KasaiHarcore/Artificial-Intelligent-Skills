@@ -1,0 +1,26 @@
+<?xml version="1.0" ?><group>
+    <person id="10">
+        <name>Tom</name>
+        <age>17</age>
+        <weight>80</weight>
+        <height>180</height>
+    </person>
+    <person id="2">
+        <name>Sepp</name>
+        <age>18</age>
+        <weight>70</weight>
+        <height>175</height>
+    </person>
+    <person id="3">
+        <name>Nina</name>
+        <age>16</age>
+        <weight>55</weight>
+        <height>165</height>
+    </person>
+    <person id="4">
+        <name>Paul Smith</name>
+        <age>45</age>
+        <weight>78</weight>
+        <height>178</height>
+    </person>
+</group>
