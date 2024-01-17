@@ -15,7 +15,7 @@ class AI:
 
         for move in game.get_valid_moves():
             game.make_move(move)
-            score = self.minimax(game, self.player.value, 4, -math.inf, math.inf)  # Pass player's value
+            score = self.minimax(game, self.player.value, 4, -math.inf, math.inf)
             game.undo()
 
             if score > best_score:
@@ -251,12 +251,10 @@ class Board(tk.Tk):
 
     def _play(self, event):
         if self._ai_play and self._game.current_player == ai.player:
-            # AI turn
             move = ai.get_move(self._game)
             self._update_board(move)
             self._game._process_move(move)
         else:
-            # Human turn
             col = event.x // 30
             row = event.y // 30
             move = Move(row, col, self._game.current_player.label)
