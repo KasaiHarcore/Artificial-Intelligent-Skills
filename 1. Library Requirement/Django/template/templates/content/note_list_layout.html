@@ -1,0 +1,84 @@
+{% load static %}
+{% load i18n %}
+{% load filtersourcetags %}
+<div class="container py-3" style="max-width: 700px;">
+    <div class="row">
+        <div class="col">
+            {% if not note.anonymous %}
+            <a href="{{ note.author.get_absolute_url }}" class="text-decoration-none text-dark">
+            <span><img src="{{ note.author.profile.avatar.url }}" class="rounded-circle" alt="Avatar" width="24" height="24"></span>
+            <span class="col">{{ note.author.full_name }}</span>
+            </a>
+            {% else %}
+            <a class="text-decoration-none text-dark">
+            <span><i class="bi bi-person-circle" style="font-size: 1.2rem;"></i></span>
+            <span class="col">{% trans "Anonymous" %}</span>
+            </a>
+            {% endif %}
+            <span class="text-secondary" style="font-size: 12px;">&#8226;</span>
+            <span class="text-secondary">
+                {% if note.is_modified %}{% trans "Updated" %}{% endif %} {{ note.modified|date:"M j" }} {% if not note.this_year %}, {{ note.modified|date:"Y" }}{% endif %}
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        {% if note.image_url %}
+        <div class="col-md-10 col-9">
+        {% endif %}
+        <div class="row mt-2 mb-0">
+            <a href="{{ note.get_absolute_url }}" class="text-decoration-none text-dark fs-4 fs-5 fw-bold">
+            {{ note.title }}
+            </a>
+        </div>
+        {% if note.source %}
+        <div class="row mb-2">
+            <div class="col d-flex align-items-center">
+                <a href="{% url 'content:source_type' code=note.source.type %}" class="text-decoration-none">
+                <span class="badge text-dark rounded-pill bg-source-{{ note.source.type }} mx-1">{{ note.source.verbose_type }}</span>
+                </a>
+                <a  href="{{ note.source.get_absolute_url }}" class="text-decoration-none text-dark">
+                <span class="fw-bold text-secondary source-title" >{{ note.source.title }}</span>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row d-md-block d-none">
+            <a href="{{ note.get_absolute_url }}" class="text-decoration-none text-dark d-block">
+                {% if note.summary %}
+                    {{ note.summary }}
+                {% else %}
+                    {{ note.preview_text|truncatechars:140 }}
+                {% endif %}
+            </a>
+        </div>
+        {% if note.image_url %}
+        </div>
+        <div class="col-md-2 col-3">
+            <img class="note-cover-image" align="right" src="{{ note.image_url }}" alt=" " style="object-fit: cover;" width="112px;" height="112px;"/>
+        </div>
+        {% endif %}
+    </div>
+    <div class="row row-cols-auto d-flex justify-content-between align-items-center mt-4">
+        <div class="col">
+            <button url="{% url 'content:bookmark_note' slug=note.slug %}" onclick="bookmarkNote({{ note.pk }});" class="btn bookmark-btn-{{ note.pk }} btn-link p-0 text-decoration-none text-dark" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{% trans "Save" %}">
+                <span><i style="font-size: 1.2rem;" class="bi bi-bookmark-plus{% if note in user_bookmarks %}-fill{% endif %}"></i></span>
+            </button>
+            {% for tag in note.tags.all %}
+            <a href="{% url 'tags:tag' slug=tag.slug %}" class="text-decoration-none text-dark">
+            <span class="badge tag rounded-pill text-bg-secondary ms-1">{{ tag }}</span>
+            </a>
+            {% endfor %}
+            {% if note.min_read %}
+            <span class="text-secondary ms-1" style="font-size: 0.8rem;" >{{ note.min_read }} {% trans "min read" %}</span>
+            {% endif %}
+        </div>
+        <div class="col d-md-block d-none">
+            <a href="{{ note.get_absolute_url }}" class="text-decoration-none" style="font-size: 0.8rem;" >
+            <span class="text-secondary p-1 rounded"><i class="bi bi-heart"></i> {{ note.likes.count }} {% trans "likes" %}</span>
+            <span class="text-secondary" style="font-size: 12px;">&#8226;</span>
+            <span class="text-secondary p-1 rounded"><i class="bi bi-eye"></i> {{ note.views }} {% trans "views" %}</span>
+            </a>
+        </div>
+    </div>
+</div>
+<hr>

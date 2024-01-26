@@ -1,0 +1,268 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load social_share %}
+{% load filtermetatags %}
+{% load filtersourcetags %}
+
+
+{% block itemscope %}prefix="og: http://ogp.me/ns#"{% endblock %}
+
+
+{% block title %}{{ note.title }} - NoteD{% endblock %}
+
+
+{% block extra_meta %}
+{% if note.draft %}
+<meta name="robots" content="noindex" />
+{% endif %}
+{% with summary=note.summary tags=note.tags.all source=note.source image=note.image_url %}
+{% if summary or source %}
+    <meta name="description" content="{% if summary %}{{ summary }}{% elif source %}{% trans "Summary on " %}{{ source.title }}{% endif %}">
+{% endif %}
+{% if summary %}
+    <meta name="summary" content="{{ summary }}">
+{% endif %}
+{% if tags %}
+    <meta name="keywords" content="{% for tag in tags %}{{ tag }}, {% endfor %}">
+{% endif %}
+<link rel="canonical" href="{{ note.get_absolute_url|full_url }}">
+
+<!-- Open Graphs -->
+<meta property="og:title" content="{{ note.title }} - NoteD">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ note.get_absolute_url|full_url }}">
+{% if image %}
+<meta property="og:image" content="{{ image }}">
+{% endif %}
+{% if summary %}
+<meta property="og:description" content="{{ summary }}">
+{% endif %}
+<meta property="og:site_name" content="NoteD - {% trans "Where knowledge is open" %}">
+{% endwith %}
+{% endblock %}
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/github-light.css' %}">
+{% endblock %}
+
+
+{% block main %}
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-lg-1 col-0"></div>
+        <div class="col-lg-8 col-12 mx-lg-0 mx-2">
+            <article class="container-fluid" style="max-width: 700px;" itemscope itemtype="https://schema.org/Blog">
+                <!-- Meta -->
+                {% with image_url=note.image_url summary=note.summary %}
+                {% if image_url %}
+                    <link itemprop="thumbnailUrl" href="{{ image_url }}" src="{{ image_url }}" />
+                    <meta itemprop="image" src="{{ image_url }}" />
+                {% endif %}
+                <link itemprop="url" href="{{ note.get_absolute_url|full_url }}">
+                <meta itemprop="inLanguage" content="{{ note.lang }}">
+                <meta itemprop="timeRequired" content="{{ note.min_read|min_required }}">
+                <link itemprop="identifier" href="{{ note.get_absolute_url|full_url }}">
+                <meta itemprop="dateCreated" datetime="{{ note.created|date:"Y-m-d" }}">
+                <meta itemprop="description"  content="{% if summary %}{{ summary }}{% else %}{{ note.preview_text }}{% endif %}">
+                {% endwith %}
+                <!-- End Meta -->
+                <div class="row d-flex justify-content-between">
+                    <div class="col-auto me-auto">
+                        <table>
+                            <tbody>
+                            {% if note.anonymous %}
+                            <tr>
+                                <td class="pe-3" rowspan="2">
+                                    <a class="text-decoration-none text-dark">
+                                        <i class="bi bi-person-circle" style="font-size: 2.2rem;"></i>
+                                    </a>
+                                </td>
+                                <td class="fw-bold">
+                                    <a class="text-decoration-none text-dark">{% trans "Anonymous" %}</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="pe-3" rowspan="2">
+                                    <a href="{{ note.author.get_absolute_url }}" class="text-decoration-none text-dark">
+                                    <img src="{{ note.author.profile.avatar.url }}" class="rounded-circle" alt="Avatar" width="45" height="45">
+                                    </a>
+                                </td>
+                                <td class="fw-bold">
+                                    <a  href="{{ note.author.get_absolute_url }}" rel="author" class="text-decoration-none text-dark" itemprop="author" itemscope itemtype="https://schema.org/Person" itemid="{{ note.author.get_absolute_url|full_url }}">
+                                        <span itemprop="givenName" >{{ note.author.given_name }}</span> <span itemprop="familyName" >{{ note.author.family_name }}</span>
+                                        <link itemprop="url" href="{{ note.author.get_absolute_url|full_url }}">
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td class="text-secondary" style="font-size: 0.8rem;">{% trans "Posted on" %} {% if note.is_modified %}{% trans "Updated" %}{% endif %} <time itemprop="dateModified" datetime="{{ note.modified|date:"Y-m-d" }}">{{ note.modified|date:"M j" }} {% if not note.this_year %}, {{ note.modified|date:"Y" }}{% endif %}</time></td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div class="col-auto d-flex align-items-center text-secondary">
+                        {% post_to_twitter '{{note.title}}' note '<i class="bi bi-twitter twitter-h px-2 color-grey" style="font-size: 1.1rem;"></i>' 'text-decoration-none text-dark' %}
+                        {% post_to_whatsapp note '<i class="bi bi-whatsapp whatsapp-h px-2 color-grey" style="font-size: 1.1rem;"></i>' 'text-decoration-none text-dark' %}
+                        {% post_to_telegram '{{note.title}} - NoteD' note '<i class="bi bi-telegram telegram-h px-2 color-grey" style="font-size: 1.1rem;"></i>' 'text-decoration-none text-dark' %}
+                        <button id="copy-note-link" class="btn btn-link text-decoration-none text-dark px-0">
+                        <i class="bi bi-link-45deg link-h px-2 color-grey" style="font-size: 1.1rem;"></i>
+                        </button>
+                        <button id="bookmark-btn-1" class="btn btn-link text-decoration-none text-dark" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% endif %}>
+                        <i class="bi bi-bookmark-plus{% if request.user in note.bookmarks.all %}-fill{% endif %} link-h ps-2 color-grey" style="font-size: 1.2rem;"></i>
+                        </button>
+                        <div class="dropdown">
+                            <a class="text-secondary" href="#" role="button"  data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots ps-4 color-grey link-h" style="font-size: 1.2rem;"></i></a>
+                            <ul class="dropdown-menu">
+                                {% if request.user == note.author %}
+                                    {% if note.pin %}
+                                    <li><button  id="pin" class="dropdown-item"><i class="bi bi-pin-angle-fill"></i> <span>{% trans "Unpin" %}</span></button></li>
+                                    {% else %}
+                                    <li><button id="pin" class="dropdown-item"><i class="bi bi-pin-angle"></i> <span>{% trans "Pin" %}</span></button></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item" href="{% url 'content:edit_note' slug=note.slug %}"><i class="bi bi-pencil-square"></i> {% trans "Edit" %}</a></li>
+                                    <li>
+                                        <form action="{% url 'content:delete_note' slug=note.slug %}" method="post">
+                                        {% csrf_token %}
+                                        <button class="dropdown-item" type="sumbit" href="#" onclick="return confirm('Are you sure you want to delete the note?');">
+                                            <i class="bi bi-trash3"></i> {% trans "Delete" %}
+                                        </button>
+                                        </form>
+                                    </li>
+                                {% endif %}
+                                <li><button class="btn btn-link dropdown-item" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% else %}data-bs-toggle="modal" data-bs-target="#downloadModal"{% endif %}><i class="bi bi-arrow-down-square"></i> {% trans "Download" %}</button></li>
+                                <li><a class="dropdown-item" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% else %}href="{% url 'content:fork' slug=note.slug %}"{% endif %}><i class="bi bi-node-plus"></i> {% trans "Copy to your" %}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <header class="row mt-5">
+                    <h1 itemprop="headline" style="font-size: 32px;">{{ note.title }}</h1>
+                    {% if note.fork %}<a href={{ note.fork.get_absolute_url }} class="text-secondary text-decoration-none" style="font-size: 0.7rem;"><i class="github-h"><i class="bi bi-box-arrow-in-up-right me-1"></i>{% trans "Copy of" %} <span itemprop="alternativeHeadline">"{{ note.fork.title }}"</span></i></a>{% endif %} 
+                </header>
+                <hr>
+                {% if note.source %}
+                <div class="row" itemprop="isBasedOn" itemscope itemtype="https://schema.org/CreativeWork">
+                    <div class="col">
+                        <a href="{% url 'content:source_type' code=note.source.type %}" class="text-decoration-none">
+                            <span class="badge text-dark rounded-pill bg-source-{{ note.source.type }} mx-1">{{ note.source.verbose_type }}</span>
+                        </a>
+                        <a  href="{{ note.source.get_absolute_url }}" class="text-decoration-none text-dark">
+                            <span class="fw-bold text-secondary source-title" itemprop="name">{{ note.source.title }}</span>
+                        </a>
+                        <link itemprop="url" href="{{ note.source.get_absolute_url|full_url }}" />
+                        <meta itemprop="description"  content="{% if note.source.description %}{{ note.source.description }}{% else %}{{ note.source.type|readabletype }}{% endif %}">
+                    </div>
+                </div>
+                {% endif %}
+                <div id="note-body" class="row mt-4" style="font-size: 19px; line-height: 33px;" itemprop="text">
+                    {{ note.body_html|safe }}
+                </div>
+                <div class="row row-cols-auto d-flex justify-content-between mt-5">
+                    <div class="col">
+                        <button id="like-btn" class="btn btn-link text-decoration-none text-dark" is-user-auth="{{ request.user.is_authenticated }}" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% endif %}>
+                        <span class="text-secondary note-stat p-1 rounded"><i class="bi bi-heart{% if request.user in note.likes.all %}-fill{% endif %}"></i> <span>{{ note.likes.count }}</span></span>
+                        </button>
+                        <a href="#" class="text-decoration-none text-dark pe-3">
+                        <span class="text-secondary note-stat p-1 rounded"><i class="bi bi-eye ms-2"></i> {{ note.views }}</span>
+                        </a>
+                        {% for tag in note.tags.all %}
+                        <a href="{% url 'tags:tag' slug=tag.slug %}" class="text-decoration-none text-dark">
+                        <span class="badge tag rounded-pill text-bg-secondary mx-1" itemprop="keywords">{{ tag }}</span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    <div class="col d-md-flex d-none text-secondary">
+                        <div class="dropdown">
+                            <a class="text-secondary" href="#" role="button"  data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-share ps-4 color-grey link-h" style="font-size: 1.2rem;"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><button id="copy-note-link2" class="btn btn-link dropdown-item"><i class="bi bi-link-45deg"></i> {% trans "Copy link" %}</button></li>
+                                <li>{% post_to_twitter '{{note.title}} - NoteD' note '<i class="bi bi-twitter"></i> Twitter</a>' 'dropdown-item' %}</li>
+                                <li>{% post_to_whatsapp note '<i class="bi bi-whatsapp"></i> WhatsApp' 'dropdown-item'  %}</li>
+                                <li>{% post_to_telegram '{{note.title}} - NoteD' note '<i class="bi bi-telegram"></i> Telegram' 'dropdown-item' %}</li>
+                            </ul>
+                        </div>
+                        <button id="bookmark-btn-2" class="btn btn-link text-decoration-none text-dark pt-0" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% endif %}>
+                            <i class="bi bi-bookmark-plus{% if request.user in note.bookmarks.all %}-fill{% endif %} link-h ps-3 color-grey" style="font-size: 1.2rem;"></i>
+                        </button>
+                        <div class="dropdown">
+                            <a class="text-secondary" href="#" role="button"  data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots ps-4 color-grey link-h" style="font-size: 1.2rem;"></i></a>
+                            <ul class="dropdown-menu">
+                                {% if request.user == note.author %}
+                                    {% if note.pin %}
+                                    <li><button  id="pin-2" class="dropdown-item"><i class="bi bi-pin-angle-fill"></i> <span>{% trans "Unpin" %}</span></button></li>
+                                    {% else %}
+                                    <li><button id="pin-2" class="dropdown-item"><i class="bi bi-pin-angle"></i> <span>{% trans "Pin" %}</span></button></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item" href="{% url 'content:edit_note' slug=note.slug %}"><i class="bi bi-pencil-square"></i> {% trans "Edit" %}</a></li>
+                                    <li>
+                                        <form action="{% url 'content:delete_note' slug=note.slug %}" method="post">
+                                        {% csrf_token %}
+                                        <button class="dropdown-item" type="sumbit" href="#" onclick="return confirm('Are you sure you want to delete the note?');">
+                                            <i class="bi bi-trash3"></i> {% trans "Delete" %}
+                                        </button>
+                                        </form>
+                                    </li>
+                                {% endif %}
+                                <li><button class="btn btn-link dropdown-item" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% else %}data-bs-toggle="modal" data-bs-target="#downloadModal"{% endif %}><i class="bi bi-arrow-down-square"></i> {% trans "Download" %}</button></li>
+                                <li><a class="dropdown-item" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% else %}href="{% url 'content:fork' slug=note.slug %}"{% endif %}><i class="bi bi-node-plus"></i> {% trans "Copy to your" %}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-4">
+            </article>
+        </div>
+        <div class="col-lg-3 col-12 px-4">
+            <div class="input-group rounded mt-0">
+                <span class="input-group-text border-0 bg-white" id="search-addon">
+                    <i class="bi bi-search"></i>
+                </span>
+                <form class="w-75" method="GET" action="{% url 'content:search' type='notes' %}">
+                    <input type="search" name="query" class="form-control rounded form-control-sm" placeholder="{% trans "Search" %}" aria-label="Search" aria-describedby="search-addon" />
+                </form>
+            </div>
+            {% if not note.anonymous %}
+            {% with user=note.author %}
+                {% include 'users/profile_sidebar_layout.html' %}
+            {% endwith %}
+            {% endif %}
+            {% include 'layouts/sidebar/more_from_noted.html' %}
+            {% include 'layouts/sidebar/footer.html' %}
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+    <div class="modal-header">
+        <p class="modal-title fs-5 fw-bold" id="exampleModalLabel">{% trans "Download Note" %}</p>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid d-flex justify-content-center">
+            <div class="row" style="max-width: 200px; text-align: left;">
+                <a href="{% url 'content:download_note' filetype='md' slug=note.slug %}" type="button" class="btn btn-outline-dark rounded-pill mt-3 social-sign-black" style="width: 200px; text-align: left;"><i class="bi bi-filetype-md"></i> MarkDown</a>
+                <a href="{% url 'content:download_note' filetype='html' slug=note.slug %}" type="button" class="btn btn-outline-dark rounded-pill mt-3 social-sign-black" style="width: 200px; text-align: left;"><i class="bi bi-filetype-html"></i> HTML</a>
+                <a href="{% url 'content:download_note' filetype='pdf' slug=note.slug %}" type="button" class="btn btn-outline-dark rounded-pill mt-3 social-sign-black disabled" style="width: 200px; text-align: left;"><i class="bi bi-filetype-pdf"></i> PDF</a>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+
+{% block extra_scripts %}
+<div id="pin-note-url" hidden>{% url 'content:pin_note' slug=note.slug %}</div>
+<div id="like-note-url" hidden>{% url 'content:like_note' slug=note.slug %}</div>
+<div id="bookmark-note-url" hidden>{% url 'content:bookmark_note' slug=note.slug %}</div>
+<script src="{% static 'js/note_display.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,137 @@
+<!-- Main navigation menu
+
+Require script `js/auth.js`
+-->
+{% load static %}
+{% load i18n %}
+{% load socialaccount %}
+{% load settingstags %}
+<!-- Left navigation -->
+{% with profile=user.profile profile_settings=user.profile.settings %}
+<nav id="left-nav" class="d-lg-flex d-none">
+    <div class="mt-4">
+        <a class="navbar-brand" href="{% url 'content:home' %}">
+            <img src="{% static 'img/logo.png' %}" alt="NoteD logo" width="34" height="34">
+        </a>
+    </div>
+    <div>
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">  
+        <li class="nav-item px-2 py-1">
+            <a class="nav-link" href="{% url 'content:home' %}" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{% trans "Home" %}">
+                <i class="bi bi-house" style="font-size: 1.5rem;"></i>
+            </a>
+        </li>
+        <li class="nav-item px-2 py-1">
+            <a href="{% if request.user.is_authenticated %}{% url 'actions:notifications' %}{% else %}#{% endif %}" class="nav-link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{% trans "Notifications" %}">
+                <i class="bi bi-bell" style="font-size: 1.5rem;" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% endif %}></i>
+            </a>
+        </li>
+        <li class="nav-item px-2 py-1">
+            <a class="nav-link" href="{% if request.user.is_authenticated %}{% url 'content:personal_notes' %}?bookmark=open{% else %}#{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{% trans "Bookmarks" %}" >
+                <i class="bi bi-bookmark-star" style="font-size: 1.5rem;" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% else %}{% endif %} ></i>
+            </a>
+        </li>
+        <li class="nav-item px-2 py-1">
+            <a class="nav-link" href="{% if request.user.is_authenticated %}{% url 'content:personal_notes' %}{% else %}#{% endif %}" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{% trans "Notes" %}">
+                <i class="bi bi-journals" style="font-size: 1.5rem;" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% else %}{% endif %} ></i>
+            </a>
+        </li>
+        <li class="nav-item my-2 py-1"><div id="decor-sep" style="height: 1px; width: 40px;"></div></li>
+        <li class="nav-item px-2 py-1">
+            <a class="nav-link" href="{% if request.user.is_authenticated %}{% url 'content:create_note' %}{% else %}#{% endif %}"  data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{% trans "Write note" %}">
+                <i class="bi bi-pencil-square" style="font-size: 1.5rem;" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% else %}{% endif %}></i>
+            </a>
+        </li>
+    </ul>
+    </div>
+    <div class="mb-4">
+    {% if not request.user.is_authenticated %}
+        <li style="list-style-type: none;"  data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{% trans "Sign In" %}">
+            <a class="nav-link color-grey" href="#">
+                <i class="bi bi-person-add" style="font-size: 1.5rem;" data-bs-toggle="modal" data-bs-target="#signin"></i>
+            </a>
+        </li>
+    {% else %}
+        <li class="nav-item dropdown" style="list-style-type: none;">
+            <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ request.user.profile.avatar.url }}" class="rounded-circle" alt="{{ request.user.full_name }} avatar" width="34" height="34">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+            <li><a href="{% url 'content:personal_notes' %}" class="dropdown-item" ><i class="bi bi-person-circle px-2"></i>{% trans "Profile" %}</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:settings' %}"><i class="bi bi-gear-fill px-2"></i>{% trans "Settings" %}</a></li>
+            <li>
+                {% get_current_language as CURRENT_LANGUAGE %}
+                <a class="dropdown-item" href="{% if CURRENT_LANGUAGE == 'ru' %}/en/{{request.get_full_path|slice:"4:"}}{% else %}/ru/{{request.get_full_path|slice:"4:"}}{% endif %}">
+                {% if CURRENT_LANGUAGE == 'ru' %}
+                <i class="bi bi-translate px-2"></i> English
+                {% else %}
+                <i class="bi bi-translate px-2"></i> Русский
+                {% endif %}
+                </a>
+            </li>
+            <li><button id="theme-btn" class="btn btn-link dropdown-item" onclick="themeSwitch();" ><i class="bi bi-brightness-high-fill px-2 theme-btn-cl"></i><span>{{ profile_settings.theme|print_theme }}</span></button></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#signout-modal"><i class="bi bi-box-arrow-left px-2"></i>{% trans "Sign Out" %}</a></li>
+            </ul>
+        </li>
+    {% endif %}
+    </div>
+</nav>
+
+<!-- Mobile bottom navigation -->
+<nav class="navbar fixed-bottom bg-dark nav-light d-lg-none d-inline">
+    <ul class="navbar-nav d-flex flex-row w-100 justify-content-around">
+    <li class="nav-item px-2">
+        <a class="nav-link" href="{% url 'content:home' %}">
+            <i class="bi bi-house" style="font-size: 1.5rem;"></i>
+        </a>
+    </li>
+    <li class="nav-item px-2">
+        <a class="nav-link" href="{% if request.user.is_authenticated %}{% url 'content:personal_notes' %}?bookmark=open{% else %}#{% endif %}">
+            <i class="bi bi-bookmark-star" style="font-size: 1.5rem;" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% endif %}></i>
+        </a>
+    </li>
+    <li class="nav-item px-2">
+        <a class="nav-link" href="{% if request.user.is_authenticated %}{% url 'content:create_note' %}{% else %}#{% endif %}">
+            <i class="bi bi-pencil-square" style="font-size: 1.5rem;" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% endif %}></i>
+        </a>
+    </li>
+    <li class="nav-item px-2">
+        <a class="nav-link" href="{% if request.user.is_authenticated %}{% url 'content:personal_notes' %}{% else %}#{% endif %}">
+            <i class="bi bi-journals" style="font-size: 1.5rem;" {% if not request.user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#signin"{% endif %}></i>
+        </a>
+    </li>
+    {% if not request.user.is_authenticated %}
+        <li style="list-style-type: none;" >
+            <a class="nav-link color-grey" href="#">
+                <i class="bi bi-person-add" style="font-size: 1.5rem;" data-bs-toggle="modal" data-bs-target="#signin"></i>
+            </a>
+        </li>
+    {% else %}
+        <li class="nav-item btn-group dropup" style="list-style-type: none;">
+            <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ request.user.profile.avatar.url }}" class="rounded-circle" alt="{{ request.user.full_name }} avatar" width="30" height="30">
+            </a>
+            <ul class="dropdown-menu position-absolute dropdown-menu-end dropdown-menu-dark">
+                <li><a class="dropdown-item" href="{% url 'content:personal_notes' %}"><i class="bi bi-person-circle px-2"></i>{% trans "Profile" %}</a></li>
+                <li><a class="dropdown-item" href="{% url 'users:settings' %}"><i class="bi bi-gear-fill px-2"></i>{% trans "Settings" %}</a></li>
+                <li>
+                    {% get_current_language as CURRENT_LANGUAGE %}
+                    <a class="dropdown-item" href="{% if CURRENT_LANGUAGE == 'ru' %}/en/{{request.get_full_path|slice:"4:"}}{% else %}/ru/{{request.get_full_path|slice:"4:"}}{% endif %}">
+                    {% if CURRENT_LANGUAGE == 'ru' %}
+                    <i class="bi bi-translate px-2"></i> English
+                    {% else %}
+                    <i class="bi bi-translate px-2"></i> Русский
+                    {% endif %}
+                    </a>
+                </li>
+                <li><button id="theme-btn-2" class="btn btn-link dropdown-item" onclick="themeSwitch();" ><i class="bi bi-brightness-high-fill px-2 theme-btn-cl"></i><span>{{ profile_settings.theme|print_theme }}</span></button></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#signout-modal"><i class="bi bi-box-arrow-left px-2"></i>{% trans "Sign Out" %}</a></li>
+            </ul>
+        </li>
+    {% endif %}
+    </ul>
+</nav>
+{% endwith %}
+{% include 'layouts/auth_modals.html' %}

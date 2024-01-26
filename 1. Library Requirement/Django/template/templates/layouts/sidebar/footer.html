@@ -1,0 +1,23 @@
+<!-- Footer for sidebar -->
+{% load static %}
+{% load i18n %}
+<hr>
+<footer>
+<div class="text-center" style="font-size: 13px;">
+    <span><img src="{% static 'img/logo.png' %}" class="bi bi-person-circle" alt="NoteD logo" width="24" height="24"></span>
+    <a href="{% url 'about' %}" class="link-secondary text-decoration-none ps-2">{% trans "About" %}</a>
+    <a href="{% url 'about' %}#contacts" class="link-secondary text-decoration-none ps-2">{% trans "Contacts" %}</a>
+    <a href="{% url 'privacy_policy' %}" class="link-secondary text-decoration-none ps-2">{% trans "Privacy Policy" %}</a>
+</div>
+<div class="text-center mt-1" style="font-size: 1.2rem;">
+    <a href="https://github.com/welel/noted" target="_blank"  class="text-decoration-none">
+    <i class="bi bi-github px-1 color-grey github-h"></i>
+    </a>
+    <a href="mailto:pavel.loginov.dev@gmail.com" target="_blank"  class="text-decoration-none">
+    <i class="bi bi-google px-1 color-grey google-h"></i>
+    </a>
+    <a href="https://t.me/weleldev/" target="_blank" class="text-decoration-none">
+    <i class="bi bi-telegram px-1 color-grey telegram-h"></i>
+    </a>
+</div>
+</footer>
