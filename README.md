@@ -32,6 +32,7 @@ Because the wild world of A.I is so big, I can't cover all of it, so I will focu
     - https://datasetsearch.research.google.com
     - https://datacatalog.worldbank.org/home
 - Free Document Searching:
+    - https://arxiv.org/ 
     - https://sci-hub.se
     - https://huggingface.co
       
