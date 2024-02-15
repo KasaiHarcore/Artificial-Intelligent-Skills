@@ -32,13 +32,14 @@ Because the wild world of A.I is so big, I can't cover all of it, so I will focu
     - https://datasetsearch.research.google.com
     - https://datacatalog.worldbank.org/home
 - Free Document Searching:
+    - https://arxiv.org/ 
     - https://sci-hub.se
     - https://huggingface.co
       
 # 💻: Coding
 - The coding example is not always working all the time; practice is also the key to mastering the coding skill. 
-    - Leetcode, Hackerrank and Kaggle are good places to practice your coding skills.
-    - Feel free to use ChatGPT, Bard, Claude AI if you get stuck in the coding part.
+    - Leetcode, Hackerrank and CodeWar are good places to practice your coding skills.
+    - Feel free to use ChatGPT, Bard, Claude AI, etc. if you get stuck in the coding part.
  
 Some code processes can be wrong because I'm still learning, so if you find any mistakes, feel free to fix them. I'll update everything, as I still have interest in this major.
 
