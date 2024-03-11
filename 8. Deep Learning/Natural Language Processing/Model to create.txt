@@ -1,0 +1,9 @@
+Sentiment Analysis (Logistic)
+Sent Ana (Naive Bayes)
+Vector Space
+Machine Translation
+Document Search
+Autocorrect
+Hidden Markov
+Autocomplete and LM (N-gram)
+Neural Network (CBOW)
