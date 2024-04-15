@@ -4,6 +4,7 @@ Vector Space
 Machine Translation
 Document Search
 Autocorrect
-Hidden Markov
+Hidden Markov model
 Autocomplete and LM (N-gram)
 Neural Network (CBOW)
+Word Embedding

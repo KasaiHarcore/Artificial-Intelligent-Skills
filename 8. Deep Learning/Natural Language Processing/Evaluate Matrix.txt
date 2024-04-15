@@ -1,0 +1,32 @@
+### Large collection of different datasets and metrics
+
+MMLU
+HellaSwag
+PIQA
+SocialIQA
+BoolQ
+WinoGrande
+CommonsenseQA
+OpenBookQA
+ARC-e
+ARC-c
+TriviaQA
+Natural Questions
+HumanEval
+MBPP
+GSM8K
+MATH
+AGIEval
+BIG-Bench
+
+### Ethics test
+RealToxicity
+BOLD
+CrowS-Pairs
+BBQ Ambig
+BBQ Disambig
+Winogender
+TruthfulQA
+Winobias 1_2
+Winobias 2_2
+Toxigen
