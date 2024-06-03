@@ -1,4 +1,4 @@
-### Large collection of different datasets and metrics
+### Large collection of different datasets
 
 MMLU
 HellaSwag
