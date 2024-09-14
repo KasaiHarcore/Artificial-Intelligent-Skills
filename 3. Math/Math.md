@@ -1,4 +1,3 @@
-
 All information about this notebook will be covered in the Introduction to Applied Linear Algebra - Vectors, Matrices, and Least Squares (Stanford ENGR108) - 2020
 
 # Chapter 1: Vectors
@@ -254,3 +253,290 @@ where $\vec{x}$ is an n-vector of features, $\beta$ is an n-vector of coefficien
 # Chapter 3
 
 ### 3.1 Norms and Distance
+
+Given a vector $\vec{x}$, the *norm* of $\vec{x}$ is a nonnegative scalar that measures the length (or size) of the vector. The norm of $\vec{x}$ is denoted by $\| \vec{x} \|$, is the squareroot of the sum of the squares of the elements of $\vec{x}$:
+
+$$
+\| \vec{x} \| = \sqrt{x_{1}^2 + x_{2}^2 + ... + x_{n}^2}
+$$
+
+It's also can be represent as:
+
+$$
+\| \vec{x} \| = \sqrt{\vec{x}^T \vec{x}}
+$$
+
+Example:
+
+$$
+\| \begin{bmatrix} 1 \\ 2 \\ 3\end{bmatrix} \| = \sqrt{1^2 + 2^2 + 3^2} = \sqrt{14}
+$$
+
+**Properties of norms**
+
+- Nonnegativity homogeneity: $\| \beta\vec{x} \| = |\beta| \| \vec{x} \|$
+- Triangle 'inequality': $\| \vec{x} + \vec{y} \| \leq \| \vec{x} \| + \| \vec{y} \|$ - You can dive deeper after learning about Cauchy-Schwarz inequality and distance calculation
+- Nonnegativity : $\| \vec{x} \| \geq0$
+- Definiteness: $\| \vec{x} \| = 0$ if and only if $\vec{x} = \vec{0}$
+
+**Mean squared**
+
+The *mean squared* of a vector $\vec{x}$ is the average of the squares of the elements of $\vec{x}$:
+
+$$
+\text{mean squared}(\vec{x}) = \frac{1}{n} \vec{x}^T \vec{x} = \frac{1}{n} \| \vec{x} \|^2
+$$
+
+**Root mean squared**
+
+So RMS is the squareroot of the mean squared:
+
+$$
+\text{RMS}(\vec{x}) = \sqrt{\text{mean squared}(\vec{x})} = \sqrt{\frac{1}{n} \vec{x}^T \vec{x}} = \frac{1}{\sqrt{n}} \| \vec{x} \|
+$$
+
+- The RMS value of a vector *x* is useful when comparing norms of vectors with different dimensions
+- Return a 'typical' value of the elements of the vector
+
+**Norm of sums**
+
+The norm of the sum of two vectors is bounded by the sum of the norms of the vectors:
+
+$$
+\| \vec{x} + \vec{y} \| = \sqrt{(x + y)^T (x + y)}\\ 
+
+                          = x^Tx + x^Ty + y^Tx +y^Ty\\
+
+                          = \sqrt{\| \vec{x}\|^2 + 2\vec{x}^T\vec{y} + \| \vec{y}\|^2}
+$$
+
+**Norm of block vectors**
+
+The norm of a stacked vector is the square root of the sum of the squares of the elements of the vectors
+
+**Chebyshev inequality**
+
+Suppose that *k* of the numbers $|x_1|, |x_2|, ..., |x_n|$ are $\geq a$. Then the sum of the squares of the numbers is $\geq a^2k$:
+
+$$
+x_1^2 + x_2^2 + ... + x_n^2\geq a^2k
+$$
+
+So:
+
+$$
+\| \vec{x} \|^2\geq\sqrt{k} a
+$$
+
+This call *Chebyshev inequality*, this used in statistics to provide an upper bound on the probability that a random variable deviates from its mean.
+
+Also RMS can be used to bound the maximum value of a vector:
+
+$$
+\frac{k}{n} \leq (\frac{\text{RMS}(\vec{x})}{a})^2
+$$
+
+### 3.2 Distance
+
+For the distance, we will separte into categories:
+
+**Euclidean distance (L2)**
+
+The *Euclidean distance* between two vectors $\vec{x}$ and $\vec{y}$ is the norm of the difference of the vectors:
+
+$$
+\text{dist} = \| \vec{x} - \vec{y} \|
+$$
+
+- Good in many applications but sensitive to outliers
+
+**Mahattan distance (L1 or Taxicab Distance)**
+
+The *Manhattan distance* between two vectors $\vec{x}$ and $\vec{y}$ is the sum of the absolute differences of the elements of the vectors:
+
+$$
+\text{dist} = \sum_{i=1}^{n} |x_i - y_i|
+$$
+
+- Works well when differences between dimensions are equally important. Used in certain applications of sparse data and linear programming.
+
+**Minkowski distance**
+
+Generalized form of both Euclidean and Manhattan distance:
+
+$$
+\text{dist} = (\sum_{i=1}^{n} |x_i - y_i|^p)^{1/p}
+$$
+
+- Flexible type in distance calculation, depending on the value of *p*:
+
+  -*p = 1*: Manhattan distance
+
+  -*p = 2*: Euclidean distance
+
+  -*p = $\infty$*: Chebyshev distance
+
+**Chebyshev distance (L-infinity)**
+
+The *Chebyshev distance* between two vectors $\vec{x}$ and $\vec{y}$ is the maximum absolute difference of the elements of the vectors:
+
+$$
+\text{dist} = \max_{i} |x_i - y_i|
+$$
+
+### 3.3 Standard deviation
+
+For *n-vector* $\vec{x}$, we have:
+
+$$
+\text{avg}(\vec{x}) = \frac{1^Tx}{n}
+$$
+
+Then de-meaned vector is:
+
+$$
+\hat{\vec{x}} = \mu = \vec{x} - \text{avg}(\vec{x}) \vec{1}
+$$
+
+Then standard deviation of $\vec{x}$ is:
+
+$$
+\text{std}(\vec{x}) = \sqrt{\sigma^2} = \text{rms}(\hat{\vec{x}}) = \sqrt{\frac{\|\vec{x} - (\frac{1^T\vec{x}}{n})\vec{1}\|^2}{n}}
+$$
+
+- The standard deviation give 'typical' amount $\vec{x}_i$ vary from the mean
+- $\text{std}(\vec{x}) = 0$ if and only if all elements of $\vec{x}$ are equal
+
+We can turn RMS into standard deviation by:
+
+$$
+\text{std}(\vec{x}) = \sqrt{\text{mean squared}(\vec{x}) - \text{avg}(\vec{x})^2}
+$$
+
+**Properties of standard deviation**
+
+- Adding a constant: For any vector $\vec{x}$ and scalar $c$, $\text{std}(\vec{x} + c) = \text{std}(\vec{x})$. This is because the mean of $\vec{x} + c$ is the mean of $\vec{x}$ plus $c$ so it doesn't change the standard deviation.
+- Multiplying by a scalar: For any vector $\vec{x}$ and scalar $c$, $\text{std}(c\vec{x}) = |c| \text{std}(\vec{x})$. This is because the mean of $c\vec{x}$ is $c$ times the mean of $\vec{x}$, and the standard deviation is the RMS of the de-meaned vector.
+
+**Standardization**
+
+In term of AI, there is a bunch of technique to standardize the data. One of the most common is *standardization* or *z-score normalization*. This is done by subtracting the mean and dividing by the standard deviation:
+
+$$
+\text{z} = \frac{1}{\text{std}(\vec{x})} (\vec{x} - \text{avg}(\vec{x}) \vec{1})
+$$
+
+Standardization is useful when the features have different scales, and we want to give them equal importance range (e.g. [0, 1]).
+
+### 3.4 Angle
+
+**Cauchy-Schwarz inequality**
+
+With two n-vector $\vec{a}$ and $\vec{b}$, the dot product of the vectors is bounded by the product of the norms of the vectors:
+
+$$
+|\vec{a}^T \vec{b}| \leq \| \vec{a} \| \| \vec{b} \|
+$$
+
+written out:
+
+$$
+|a_1 b_1 + a_2 b_2 + ... + a_n b_n| \leq (a_1^2 + a_2^2 + ... + a_n^2)^{\frac{1}{2}} (b_1^2 + b_2^2 + ... + b_n^2)^{\frac{1}{2}}
+$$
+
+The inequality cleary hold if $\vec{a}$ and $\vec{b}$ equal to zero. So we suppose now that $\vec{a}$ and $\vec{b}$ are not zero. Then we can define $\alpha = \| \vec{a} \|$ and $\beta = \| \vec{b} \|$. We observe:
+
+$$
+0\leq \| \beta\vec{a} - \alpha\vec{b} \|^2 \\ = \beta^2 \| \vec{a} \|^2 - 2\alpha\beta\vec{a}^T \vec{b} + \alpha^2 \| \vec{b} \|^2 \\ = 2\| \vec{a} \|^2 \| \vec{b} \|^2 - 2 \| \vec{a} \| \| \vec{b} \| (a^Tb)
+$$
+
+And now we can show triangle inequality based on Cauchy-Schwarz inequality:
+
+$$
+\| \vec{a} + \vec{b} \|^2 = \| \vec{a} \|^2 + \| \vec{b} \|^2 + 2\vec{a}^T \vec{b} \leq (\| \vec{a} + \vec{b} \|)^2
+$$
+
+**Angle between vectors**
+
+The *angle* between two vectors $\vec{a}$ and $\vec{b}$ is the angle $\theta$ such that:
+
+$$
+\theta = \cos^{-1} \frac{\vec{a}^T \vec{b}}{\| \vec{a} \| \| \vec{b} \|}
+$$
+
+where $\cos^{-1}$ is the inverse cosine function. The angle is between 0 and $\pi$.
+
+The angle between $\vec{a}$ and $\vec{b}$ is written as $\angle(\vec{a}, \vec{b})$ (can expressed in degrees). The angle is not affected by scaling each of the vector by a positive scalar.
+
+$$
+\angle(\vec{a}, \vec{b}) = \angle(\alpha\vec{a}, \beta\vec{b})
+$$
+
+Relationship between angle and dot product:
+
+- Orthogonal vectors: $\vec{a}^T \vec{b} = 0$ if and only if $\angle(\vec{a}, \vec{b}) = \frac{\pi}{2}$
+- Aligned vectors: $\vec{a}^T \vec{b} = \| \vec{a} \| \| \vec{b} \|$ if and only if $\angle(\vec{a}, \vec{b}) = 0$
+- Anti-aligned vectors: $\vec{a}^T \vec{b} = -\| \vec{a} \| \| \vec{b} \|$ if and only if $\angle(\vec{a}, \vec{b}) = \pi$
+- Acute angle: $\vec{a}^T \vec{b} > 0$ if and only if $\angle(\vec{a}, \vec{b}) < \frac{\pi}{2}$
+- Obtuse angle: $\vec{a}^T \vec{b} < 0$ if and only if $\angle(\vec{a}, \vec{b}) > \frac{\pi}{2}$
+
+**Norm of sum via angles**
+
+For vectors *x* and *y*, we have:
+
+$$
+\| \vec{x} + \vec{y} \|^2 = \| \vec{x} \|^2 + \| \vec{y} \|^2 + 2 \| \vec{x} \| \| \vec{y} \| \cos(\angle(\vec{x}, \vec{y}))
+$$
+
+Where $\theta = \angle(\vec{x}, \vec{y})$. From this we can make obersevation:
+
+- If *x* and *y* are aligned (angle = 0), then $\| \vec{x} + \vec{y} \| = \| \vec{x} \| + \| \vec{y} \|$. Thus, norm addition.
+- If *x* and *y* are orthogonal (angle = $\frac{\pi}{2}$), then $\| \vec{x} + \vec{y} \| = \sqrt{\| \vec{x} \|^2 + \| \vec{y} \|^2}$. Thus, *Pythagorean theorem*.
+
+**Correlation coefficient**
+
+Suppose $\vec{a}$ and $\vec{b}$ are two n-vectors, with associated de-meaned vectors
+
+$$
+\hat{\vec{a}} = \vec{a} - \text{avg}(\vec{a}) \vec{1}
+$$
+
+$$
+\hat{\vec{b}} = \vec{b} - \text{avg}(\vec{b}) \vec{1}
+$$
+
+Assume that $\| \hat{\vec{a}} \| \neq0$ and $\| \hat{\vec{b}} \| \neq0$. The *correlation coefficient* between $\vec{a}$ and $\vec{b}$ is:
+
+$$
+\text{corr}(\vec{a}, \vec{b}) = p = \frac{\hat{\vec{a}}^T \hat{\vec{b}}}{\| \hat{\vec{a}} \| \| \hat{\vec{b}} \|}
+$$
+
+Thus, $p = \cos(\theta)$, where $\theta = \angle(\hat{\vec{a}}, \hat{\vec{b}})$. With $\text{corr}(\vec{a}, \vec{b}) \in [-1, 1]$. The correlation coefficient is a measure of the linear relationship between two vectors.
+
+We also can express correlation coefficient in terms of the vectors $\vec{u}$ and $\vec{v}$ obtained by standardizing the vectors. With $u = \frac{\hat{\vec{a}}}{\text{std}(\vec{a})}$ and $v = \frac{\hat{\vec{b}}}{\text{std}(\vec{b})}$, we have:
+
+$$
+\text{corr}(\vec{a}, \vec{b}) = p = \frac{u^Tv}{n}
+$$
+
+**Standard deviation of sum**
+
+We can derive a formula for the standard deviation of a sum from:
+
+$$
+\text{std}(\vec{a} + \vec{b}) = \sqrt{\text{std}(\vec{a})^2 + 2p\text{std}(\vec{a})\text{std}(\vec{b}) + \text{std}(\vec{b})^2}
+$$
+
+### 3.5 Complexity
+
+- Norm calculation and RMS value take $2n$ flops.
+- Distance take $3n$ flops.
+- Angle calculation take $6n$ flops.
+- De-mean vector take $2n$ flops.
+- Standard deviation take $4n$ flops.
+- Standardizing costs $5n$ flops.
+- Correlation coefficient take $10n$ flops.
+
+# Chapter 4: Clustering
+
+### 4.1 Clustering
