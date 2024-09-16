@@ -8,3 +8,10 @@ Hidden Markov model
 Autocomplete and LM (N-gram)
 Neural Network (CBOW)
 Word Embedding
+RNN
+LDA
+LSTM
+GRU
+Seq2Seq
+Transformer
+BERT
