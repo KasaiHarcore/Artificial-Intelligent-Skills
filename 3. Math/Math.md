@@ -113,7 +113,7 @@ The meaning is the same
 
 **Properties of scalar-vector multiplication**
 
-- Right Distributive: $c (\vec{a} + \vec{b}) = c \vec{a} + c \vec{b}$ || $(c + d) \vec{a} = c \vec{a} + d \vec{a}$
+- Right | Left Distributive: $c (\vec{a} + \vec{b}) = c \vec{a} + c \vec{b}$ || $(c + d) \vec{a} = c \vec{a} + d \vec{a}$
 - Associative: $c (d \vec{a}) = (cd) \vec{a}$
 
 **Linear combination**
@@ -540,3 +540,475 @@ $$
 # Chapter 4: Clustering
 
 ### 4.1 Clustering
+
+For short, we can say:
+
+- Given $N$ n-vectors $\vec{x}_1, \vec{x}_2, ..., \vec{x}_N$.
+- Goal: Partition (divide, cluster) into $k$ groups
+- Want vectors in the same group to be close to one another.
+
+Let's $G_j \subset ({1, \cdots, N})$ is group $j$ for $j = 1, 2, ..., k$; $c_i$ is group that $x_i$ is in: $i \in G_{c_i}$.
+
+Example: I have 4 number $1,2,3,4$ and I want to divide them into 2 groups. Then $G_1 = \{1, 2\}$ and $G_2 = \{3, 4\}$. With $c_1 = 1$ and $c_2 = 1$.
+
+With each group represent *n-vector*. And we want each representative to be close to the vectors in the group. Thus $ \| \vec{x}_i - \vec{z}_j \|$ to be small. Where $\vec{z}_j$ is the representative of group $j$.
+
+So the clustering objective is to minimize the sum of the squared distances of each vector to its representative:
+
+$$
+J^{\text{clust}} = \frac{1}{N} \sum_{i=1}^{N} \| \vec{x}_i - \vec{z}_{c_i} \|^2
+$$
+
+Because $c_i$ only appears in term $\| \vec{x}_i - \vec{z}_{c_i} \|^2$, so we have to minimize over $c_i$:
+
+$$
+\| \vec{x}_i - \vec{z}_{c_i} \|^2 = \min_{j} \| \vec{x}_i - \vec{z}_j \|^2
+$$
+
+Ok so after we have partitioned the vectors into groups, we can find the representative of each group by minimizing the sum of the squared distances of the vectors in the group to the representative:
+
+$$
+J^{\text{clust}} = J_1 + \cdots + J_k
+$$
+
+Where:
+
+$$
+J_j = \frac{1}{N} \sum_{i \in G_j} \| \vec{x}_i - \vec{z}_j \|^2
+$$
+
+So that we choose $z_j$ to minimize mean squared distance of vectors in group $j$ to $z_j$. This mean:
+
+$$
+z_j = \frac{1}{|G_j|} \sum_{i \in G_j} \vec{x}_i
+$$
+
+K-mean algorithms can be using in many application such as: Classification, Guessing missing entries, Recommendation Engine, Document clustering, etc.
+
+# Chapter 5: Linear Independence
+
+### 5.1 Linear dependence
+
+Set of *n-vectors* ${a_1, \cdots, a_k}$ (with $k \geq1$) are *linearly independent* if:
+
+$$
+\beta_1 a_1 + \cdots + \beta_k a_k = 0
+$$
+
+For some $\beta_1, \cdots, \beta_k$ not all zero.
+
+From here we can proof a set of vectors are linearly dependent by proof a random $a_i$ can be written as a linear combination of the other vectors.
+
+$$
+a_i = \sum_{j \neq i} -\frac{\beta_j}{\beta_i} a_j
+$$
+
+**NOTE THAT**: Linear independence is a property of a set of vectors, not of a single vector.
+
+Some properties:
+
+- {$a_1$} is linearly dependent only if $a_1 = 0$.
+- {$a_1, a_2$} is linearly dependent if only one $a_i$ is a multiple of the other
+
+**Linear Independence**
+
+A collection of *n_vectors* $a_1, \cdots, a_k$ (with $k \geq1$) is *linearly independent* if it's not linearly dependent:
+
+$$
+\beta_1 a_1 + \cdots + \beta_k a_k = 0
+$$
+
+Only holds for $\beta_1 = \cdots = \beta_k = 0$. Which mean only independent if all coefficients is zero.
+
+Example:
+
+- A list consisting of a single vector is linearly dependent only if the vector is zero. Else, it's linearly independent (vector is not zero).
+- Any list of vectors containing the zero vector is linearly dependent.
+- A list of vectors is linearly dependent if and only if one of the vectors is a multiple of the other one
+- The vectors:
+
+$$
+a_1 = \begin{bmatrix} 0.2 \\ -7.0 \\ 8.6\end{bmatrix}, a_2 = \begin{bmatrix} -0.1 \\ 2.0 \\ -1.0\end{bmatrix}, a_3 = \begin{bmatrix} 0.0 \\ -1.0 \\ 2.2\end{bmatrix}
+$$
+
+are linearly dependent, since $a_1 + 2a_2 - 3a_3 = 0$. We can express any of these vectors as a linear combination of the other two.
+
+- The vectors:
+
+$$
+a_1 = \begin{bmatrix} 1 \\ 0 \\ 0\end{bmatrix}, a_2 = \begin{bmatrix} 0 \\ -1 \\ 1\end{bmatrix}, a_3 = \begin{bmatrix} -1 \\ 1 \\ 1\end{bmatrix}
+$$
+
+are linearly independent. We can't express any of these vectors as a linear combination of the other two. Which can only be true if all coefficients are zero.
+
+**Linear combinations of linearly independent vectors**
+
+Suppose $x$ is linear combination of lnearly independent vectors $a_1, \cdots, a_k$:
+
+$$
+x = \beta_1a_1 + \cdots + \beta_ka_k
+$$
+
+Then coefficients $\beta_1, \cdots, \beta_k$ are unique, if:
+
+$$
+x = \gamma_1a_1 + \cdots + \gamma_ka_k
+$$
+
+Then $\beta_i = \gamma_i$ for all $i = 1, \cdots, k$.
+
+To see this, we can subtract the two equations to get:
+
+$$
+0 = (\beta_1 - \gamma_1)a_1 + \cdots + (\beta_k - \gamma_k)a_k
+$$
+
+Which only be true if $\beta_i - \gamma_i = 0, \forall i$ This gives us a good interpretation: A list of vectors is linearly independent if and only if for any linear combination of them, we can infer or deduce the associated coefficients.
+
+**Superset**: If we add vectors to a linearly dependent collection of vectors, the new collection is also linearly dependent.
+
+**Subset**: Removing vectors from a collection of vectors preserves linear independence.
+
+### 5.2 Basis
+
+**Independence-dimension inequality** If the *n-vector* $a_1, \cdots, a_k$ are linearly independent, then $k \leq n$, In words:
+
+***A linearly independent collection of n-vector can have at most n elements***
+
+In other way:
+
+***Any collection of n + 1 or more n-vectors is linearly dependent***
+
+This can be show by using Basis:
+
+**Basis**: A collection of *n* linearly independent n-vector is called a *basis*. If the n-vectors $a_1, \cdots, a_n$ are a basis, then any n-vector $b$ can be expressed as a linear combination of the basis vectors:
+
+$$
+\beta_1a_1 + \cdots + \beta_na_n + \beta_{n + 1}b = 0
+$$
+
+If $\beta_{n + 1} = 0$, then we have:
+
+$$
+\beta_1a_1 + \cdots + \beta_na_n = 0
+$$
+
+Which since $a_1, \cdots, a_n$ are linearly independent, we have $\beta_1 = \cdots = \beta_n = 0$. But if the linear combination is 0, which mean all $\beta_i$ are zero. So we conclude that $\beta_{n + 1} \neq0$. If it's not zero then:
+
+$$
+b = (\frac{-\beta_1}{\beta_{n + 1}})a_1 + \cdots + (\frac{-\beta_n}{\beta_{n + 1}})a_n
+$$
+
+**Expansion in a basis**:
+
+Any n-vector b can be expressed as linear combination of them:
+
+$$
+b = \beta_1a_1 + \cdots + \beta_na_n
+$$
+
+for some $\beta_1, \cdots, \beta_n$. The coefficients are unique.
+
+### 5.3 Orthonormal vectors
+
+- Set of n-vectors $a_1, \cdots, a_k$ are (mutually) *orthogonal* if $a_i \perp a_j$ for all $i \neq j$.
+- They are normalized if $\| a_i \| = 1$ for all $i$.
+
+=> The are orthonormal if both hold, and can be expressed using inner products as:
+
+$$
+a_i^T a_j = \begin{cases} 1 & \text{if } i = j \\ 0 & \text{if } i \neq j \end{cases}
+$$
+
+**Linear independence of orthonormal vectors**: To see this, suppose $a_1, \cdots, a_k$ are orthonormal:
+
+$$
+\beta_1a_1 + \cdots | \beta_ka_k = 0
+$$
+
+Taking inner product with $a_i$:
+
+$$
+0 = a_i^T(\beta_1a_1 + \cdots + \beta_ka_k) \\
+
+= \beta_1(a_i^Ta_1) + \cdots + \beta_k(a_i^Ta_k) \\
+
+= \beta_i
+$$
+
+since $a_i^Ta_j = 0$ for $i \neq j$ and $a_i^Ta_i = 1$. Thus, $\beta_i = 0$ for all $i$. The linear combination of $a_1, \cdots, a_k$ that is zero is the one with all coefficients zero.
+
+**Linear combinations of orthonormal vectors**: Suppose a vector x is a linear combination of $a_1, \cdots, a_k$ where $a_1, \cdots, a_k$ are orthonormal:
+
+$$
+x = \beta_1a_1 + \cdots + \beta_ka_k
+$$
+
+Taking the inner product of the left-hand and right-hand sides of this equation with $a_i$ yields:
+
+$$
+a_i^Tx = a_i^T(\beta_1a_1 + \cdots + \beta_ka_k) = \beta_i
+$$
+
+using the same argument as above. So if a vector is a linear combination of orthonormal vector, we can easily find the coefficients of the linear combination by taking the inner product of the vectors.
+
+**Orthonormal basis**: Is a set of vectors that are mutually orthogonal and have unit length.
+
+### 5.4 Gram-Schmidt (orthogonalization) algorithm
+
+This is an algorithm to check if $a_1, \cdots, a_k$ are linearly independent
+
+Given n-vectors $a_1, \cdots, a_k$. For $i = 1, \cdots, k$:
+
+1. Orthogonalization:$\hat{q_i} = a_i - (q_1^Ta_i)q_1 - \cdots - (q_{i-1}^Ta_i)q_{i-1}$
+2. Test for linear dependence: if$\hat{q_i} = 0$, then $a_1, \cdots, a_k$ are linearly dependent => quit
+3. Normalization:$q_i = \hat{q_i} / ||\hat{q_i}||$
+
+- if G-S does not stop early, then $a_1, \cdots, a_k$ are linearly independent
+- if G-S stops early in iteration $i = j$, then $a_j$ is a linear combination of $a_1, \cdots, a_{j-1}$ (so $a_1, \cdots, a_k$ are linearly dependent)
+
+**Analysis of Gram-Schmidt algorithm**: Let show that the following hold, for $i = 1, \cdots, k$, assuming that $a_1, \cdots, a_k$ are linearly independent:
+
+1. $\hat{q_i} \neq0$, so the linear dependence test in step 2 is not satisfied, and we do not have a divide-by-zero error in step 3.
+2. $q_1, \cdots, q_i$ are orthonormal.
+3. $a_i$ is a linear combination of $q_1, \cdots, q_i$.
+4. $q_i$ is a linear combination of $a_1, \cdots, a_i$.
+
+We can show this by induction: For $q_1, \cdots, q_i$ are orthonormal, assume it's true for $i - 1$. We will:
+
+- Make orthogonalization step ensures that: $\hat{q_i} \perp q_1, \cdots, \hat{q_i} \perp q_{i-1}$. To see this:
+
+$$
+q_j^T\hat{q_i} = q_j^T a_i - (q_1^Ta_i)(q_j^Tq_1) - \cdots - (q_{j-1}^Ta_i)(q_j^Tq_{j-1}) = q_j^Ta_i - q_j^Ta_i = 0, \forall j < i
+$$
+
+- So $q_1, \cdots, q_i$ are orthonormal.
+- Normalization step ensures that $\|q_i\| = 1$.
+
+Assuming G-S has not terminate before iteration $i$
+
+- $a_i$ is a linear combination of $q_1, \cdots, q_i$:
+
+$$
+a_i = \hat{q_i} + (q_1^Ta_i)q_1 + \cdots + (q_{i-1}^Ta_i)q_{i-1} = q_i + (q_1^Ta_i)q_1 + \cdots + (q_{i-1}^Ta_i)q_{i-1}
+$$
+
+- $q_i$ is a linear combination of $a_1, \cdots, a_i$, by induction on $i$:
+
+$$
+q_i = \frac{1}{\hat{\|q_i\|}} (a_i - (q_1^Ta_i)q_1 - \cdots - (q_{i-1}^Ta_i)q_{i-1})
+$$
+
+and (by induction assumpption) each $q_1, \cdots, q_{i-1}$ is a linear combination of $a_1, \cdots, a_{i-1}$.
+
+**Complexity**:
+
+- Step 1 of iteration $i$ requires $i - 1$ inner products which cost $(i - 1)(2n - 1)$ flops
+- Need $2n(i - 1)$ flops to compute $\hat{q_i}$
+- $3n$ flops to compute $\|\hat{q_i}\|$ and $q_i$
+- Total cost: $\sum_{i = 1}^{k} ((4n - 1)(i - 1) + 3n) = (4n - 1) \frac{k(k - 1)}{2} + 3kn = O(kn^2)$
+
+Where using $\sum_{i = 1}^{k} i = \frac{k(k + 1)}{2}$
+
+
+# Chapter 6: Matrices
+
+### 6.1 Matrices
+
+A matrix is a rectangular array of numbers, e.g:
+
+$$
+\begin{bmatrix} 0 & 1 & -2.3 & 0.1 \\ 1.3 & 4 & -0.1 & 0 \\ 4.1 & -1 & 0 & 1.7\end{bmatrix}
+$$
+
+- It's size given by (row dimension) x (column dimension). The matrix above is a 3x4 matrix.
+- Elements also called entries or coefficients.
+- $B_{ij}$ is the element in the $i$-th row and $j$-th column.
+- $i$ is the row index, $j$ is the column index; indexes start at 1.
+- Two matrices are equal (denoted with $=$) if they have the same size and their corresponding elements are equal.
+
+**Matrix indexing**: Standard notation indexs the rows and columns of a matrix starting from 1. In computer language, it's often stored as 2-dimensional arrays, which are indexed starting from 0. Some advance programming level allow to index starting from 1.
+
+**Square, tall, and wide matrices**:
+
+- Square: number of rows = number of columns.
+- Tall: number of rows > number of columns.
+- Wide: number of rows < number of columns.
+
+**Column and row vector**: An n-vector can be interpreted as an $n \times1$ matrix; we do not distinguish between vectors and matrices with one column. A row vector can be interpreted as a $1\times n$ matrix which is 1 row and n columns. Matrix with size $1\times1$ is a scalar.
+
+**Block matrices and Submatrices**: A block matrix is a matrix whose elements are matrices. A submatrix is a matrix formed by selecting certain rows and columns of a matrix.
+
+Example:
+
+$$
+A = \begin{bmatrix} B & C \\ D & E \end{bmatrix}
+$$
+
+Consider with real number:
+
+$$
+B = \begin{bmatrix} 0 & 2 & 3\end{bmatrix}
+$$
+
+$$
+C = \begin{bmatrix} -1\end{bmatrix}
+$$
+
+$$
+D = \begin{bmatrix} 2 & 2 & 1 \\ 1 & 3 & 5\end{bmatrix}
+$$
+
+$$
+E = \begin{bmatrix} 4 & 4\end{bmatrix}
+$$
+
+Then:
+
+$$
+A = \begin{bmatrix} 0 & 2 & 3 & -1 \\ 2 & 2 & 1 & 4 \\ 1 & 3 & 5 & 4\end{bmatrix}
+$$
+
+With submatrix, it have a general form as:
+
+$$
+A_{p:q, r:s} = \begin{bmatrix} A_{p,r} & A_{p,r+1} & \cdots & A_{p,s} \\ A_{p+1,r} & A_{p+1,r+1} & \cdots & A_{p+1,s} \\ \vdots & \vdots & \ddots & \vdots \\ A_{q,r} & A_{q,r+1} & \cdots & A_{q,s} \end{bmatrix}
+$$
+
+Example:
+
+$$
+A_{2:3, 3:4} = \begin{bmatrix} 1 & 4 \\ 5 & 4\end{bmatrix}
+$$
+
+**Relation matrice**
+
+A relation is a set of pairs of object, labeled $1, \cdots, n$ such as:
+
+$$
+\mathcal{R} = \{ (i, j) \mid i, j \in \{1, \cdots, n\} \}
+$$
+
+Example with a directed graph:
+
+$$
+\mathcal{R} = \{ (1, 2), (1, 3), (2, 3), (3, 1) \}
+$$
+
+Can be represented as a matrix:
+
+$$
+A = \begin{bmatrix} 0 & 1 & 1 \\ 0 & 0 & 1 \\ 1 & 0 & 0\end{bmatrix}
+$$
+
+Where $A_{ij} = 1$ if $(i, j) \in\mathcal{R}$ and $0$ otherwise.
+
+### 6.2 Zero and identity matrices
+
+**Zero matrix**: A matrix with all elements equal to zero. Denoted by $0$ or $0_{m \times n}$.
+
+**Identity matrix**: A square matrix with ones on the diagonal and zeros elsewhere. Denoted by $I$ or $I_n$. can be express:
+
+$$
+I_{ij} = \begin{cases} 1 & \text{if } i = j \\ 0 & \text{if } i \neq j \end{cases}
+$$
+
+The column vectors of the $n \times n$ identity matrix are the unit vectors of size n. Using block matrix notation with vector $e_i$:
+
+$$
+I = \begin{bmatrix} e_1 & e_2 & \cdots & e_n \end{bmatrix}
+$$
+
+Where $e_k$ is the k-th column of the identity matrix. Some time a subscript is used to denote the size of the identity matrix, e.g $I_{m \times n}$. Example:
+
+$$
+A = \begin{bmatrix} 1 & 2 & 3\\ 4 & 5 & 6\end{bmatrix}
+$$
+
+then:
+
+$$
+\begin{bmatrix} I & A \\ 0 & I \end{bmatrix} = \begin{bmatrix} 1 & 0 & 1 & 2 & 3 \\ 0 & 1 & 4 & 5 & 6 \\ 0 & 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 1\end{bmatrix}
+$$
+
+**Spare matrices**: Same like vector, if most of the elements in a matrix are zero, it's called a sparse matrix. It's often stored in a special format to save memory.
+
+**Diagonal matrix**: A square matrix with non-zero elements only on the diagonal. Denoted by $D$, $D_n$ or $\text{diag}$. Example:
+
+**Traingular matrix**: A square matrix with all elements above or below the diagonal equal to zero. A lower triangular matrix has all elements above the diagonal equal to zero. A upper triangular matrix has all elements below the diagonal equal to zero.
+
+### 6.3 Transpose, addition, and norm
+
+##### 6.3.1 Transpose
+
+The transpose of an $m \times n$ matrix $A$ is denoted $A^T$, and defined by:
+
+$$
+A^T_{ij} = A_{ji, i = 1, \cdots, m, j = 1, \cdots, n}
+$$
+
+Example:
+
+$$
+\begin{bmatrix} 0 & 4 \\ 7 & 0 \\ 3 & 1\end{bmatrix}^T = \begin{bmatrix} 0 & 7 & 3 \\ 4 & 0 & 1\end{bmatrix}
+$$
+
+Transpose converts columns to row vectorrs and vice versa. It has the following properties:
+
+- $(A^T)^T = A$
+- $(A + B)^T = A^T + B^T$
+- $(\alpha A)^T = \alpha A^T$
+
+**Tranpose of block matrices**: The transpose of a block matrix is the block of each matrix transposed inside the block. Example:
+
+$$
+\begin{bmatrix} A & B \\ C & D \end{bmatrix}^T = \begin{bmatrix} A^T & C^T \\ B^T & D^T \end{bmatrix}
+$$
+
+**Document-term matrix**: Consider a corpus (collection) of N documents, with word count vectors for a dictionary with n words. The *document-term* matrix associated with the corpus is an $N \times n$ matrix $A$ where $A_{ij}$ is the number of times word $j$ appears in document $i$. The transpose of the document-term matrix is the *term-document* matrix.
+
+**Data matrix**: Consider a dataset with n samples and p features. The data matrix is an $n \times p$ matrix $X$ where $X_{ij}$ is the value of the j-th feature for the i-th sample. The transpose of the data matrix is the *feature matrix*.
+
+**Symmetric matrix**: A square matrix is symmetric if $A = A^T$. It has the following properties:
+
+- $(A + B)^T = A^T + B^T$
+- $(\alpha A)^T = \alpha A^T$
+
+##### 6.3.2 Addition, Subtraction and Scalar Multiplication
+
+Same like vector, we can add or subtract matrices of the same size:
+
+$$
+(A + B)_{ij} = A_{ij} + B_{ij}
+$$
+
+Scalar multiplication:
+
+$$
+(\alpha A)_{ij} = \alpha A_{ij}
+$$
+
+Properties:
+
+- $A + B = B + A$
+- $\alpha (A + B) = \alpha A + \alpha B$
+- $(A + B)^T = A^T + B^T$
+
+##### 6.3.3 Norm
+
+The norm of a matrix is a generalization of the notion of length for vectors. The most common norm is the Frobenius norm:
+
+$$
+\|A\|_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |A_{ij}|^2}
+$$
+
+Agrees with vector norm when $n = 1$. It has the following properties:
+
+- $\|A\|_F \geq0$
+- $\|A\|_F = 0$ if and only if $A = 0$
+- $\|\alpha A\|_F = |\alpha| \|A\|_F$
+- $\|A + B\|_F \leq \|A\|_F + \|B\|_F$
+
+Distance between matrices: $d(A, B) = \|A - B\|_F$
+
+### 6.4 Matrix-vector multiplication
