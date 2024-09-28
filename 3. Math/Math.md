@@ -810,7 +810,6 @@ and (by induction assumpption) each $q_1, \cdots, q_{i-1}$ is a linear combinati
 
 Where using $\sum_{i = 1}^{k} i = \frac{k(k + 1)}{2}$
 
-
 # Chapter 6: Matrices
 
 ### 6.1 Matrices
@@ -1012,3 +1011,139 @@ Agrees with vector norm when $n = 1$. It has the following properties:
 Distance between matrices: $d(A, B) = \|A - B\|_F$
 
 ### 6.4 Matrix-vector multiplication
+
+If $A$ is an $m \times n$ matrix and $x$ is an $n$-vector, then the matrix-vector product $y = Ax$ is them $m$-vector $y$ with elements:
+
+$$
+y_i = \sum_{k = 1}^{n}A_{ik}x_k = A_{i1}x_1 + \cdots + A_{in}x_n
+$$
+
+Example:
+
+$$
+\begin{bmatrix} 0 & 2 & -1 \\ -2 & 1 & 1\end{bmatrix} \begin{bmatrix} 2 \\ 1 \\ -1\end{bmatrix} = \begin{bmatrix} 0\cdot2 + 2\cdot1 + (-1) \cdot (-1) \\ -2\cdot2 + 1\cdot1 + 1\cdot (-1) \end{bmatrix} = \begin{bmatrix} 3 \\ -4\end{bmatrix}
+$$
+
+**General examples:**
+
+- Zero matrix: $0\cdot x = 0$
+- Identity matrix: $I \cdot x = x$
+- Picking out columns and rows: $A \cdot e_i = i$ and $e_j^T \cdot A = A_j$
+- Summing or averaging columns or rows: The $m$-vector $A1$ is the sum of the columns of $A$; its $i$-th entry is the sum of the entries in the $i$-th row of A. Average can be made by dividing by $n$.
+- Difference Maitrx: The $(n - 1) \times n$ matrix:
+
+$$
+D = \begin{bmatrix} -1 & 1 & 0 & \cdots & 0 \\ 0 & -1 & 1 & \cdots & 0 \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & 0 & \cdots & 1\end{bmatrix}
+$$
+
+The vector $Dx$ is the vector of differences of consecutive entries of $x$:
+
+$$
+Dx = \begin{bmatrix} x_2 - x_1 \\ x_3 - x_2 \\ \vdots \\ x_n - x_{n - 1} \end{bmatrix}
+$$
+
+- Running sum matrix: The $n \times n$ matrix:
+
+$$
+S = \begin{bmatrix} 1 & 0 & 0 & \cdots & 0 \\ 1 & 1 & 0 & \cdots & 0 \\ 1 & 1 & 1 & \cdots & 0 \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ 1 & 1 & 1 & \cdots & 1\end{bmatrix}
+$$
+
+is called the running sum matrix. The $i$-th entry of the *n*-vector $Sx$ is the sum of the first $i$ entries of $x$:
+
+$$
+Sx = \begin{bmatrix} x_1 \\ x_1 + x_2 \\ x_1 + x_2 + x_3 \\ \vdots \\ x_1 + x_2 + \cdots + x_n \end{bmatrix}
+$$
+
+**Inner product:** When $a$ and $b$ are vectors of the same length, their inner product is the sum of the products of their corresponding entries. The inner product of $a$ and $b$ is denoted by $a \cdot b$ or $a^Tb$:
+
+**Linear dependence of columns** We can express the conceopts of linear dependence and independence of vectors in terms of matrix-vector multiplication. The columns of a matrix $A$ are linearly dependent if $Ax = 0$ for some $x \neq0$. The columns of a matrix $A$ are linearly independent if $Ax = 0$ implies $x = 0$.
+
+**Expansion in a basis** If the columns of $A$ are a basis, which means $A$ is square with linearly independent columns $a_1, \cdots, a_n$, then for any n-vector $b$ there is a unique n-vector $x$ that satisfies $Ax = b$. In this case, vector $x$ gives the coefficient in the expansion of $b$ in the basis $a_1, \cdots, a_n$.
+
+- Properties of matrix-vector multiplication:
+
+  - $(A + B)x = Ax + Bx$
+  - $(\alpha A)x = \alpha(Ax)$
+
+### 6.5 Complexity
+
+In computer represent, An $m \times n$ matrix usually represent as an array of floating point number, which need $8mn$ bytes. Some factor to stores more efficiently by using spare or traigular matrix.
+
+For matrix addition, subtraction, scalar multiplication, for a normal operation, need $mn$ flops. When it's spare, scalar multiplication can be done in $\text{nnz}(A)$ flops. If one of two matrix is spare, it need $\min \{ \text{nnz}(A), \text{nnz}(B) \}$ flops. While add or sub need only $\text{nnz}(A) + \text{nnz}(B)$ flops.
+
+Transposition only need 0 flops
+
+Matrix-vector multiplication need $m(2n - 1)$ flops for a matrix $m \times n$ and a vector $n$. Which can be simplify to $2mn$ flops
+
+# Chapter 7: Matrix Example
+
+### 7.1 Geomatric transformations
+
+**Scaling** is the mapping $y = ax$, where $a$ is a scalar. This can be expressed as $y = Ax$, with $A = aI$. This mapping stretches a vector by factor $|a|$ (or shrinks if $|a| < 1$), and flips the vector if $a < 0$.
+
+**Dilation** is the mapping $y = Dx$, where $D$ is a diagonal matrix, $D = \text{diag}(d_1, d_2)$. This mapping stretches or shrinks the vector by different factors along the two different axes (Or shinks if $d_i < 1$ and flips if $d_i < 0$).
+
+**Rotation** Suppose that $y$ is the vector obtained by rotating $x$ by $\theta$ radians counterclockwise. Then we have:
+
+$$
+y = \begin{bmatrix} \cos (\theta) & -\sin (\theta) \\ \sin (\theta) & \cos (\theta) \end{bmatrix}x
+$$
+
+**Reflection** Suppose that $y$ is the vector obtained by reflecting $x$ through the line that passes through the origin, inclined $\theta$ radians with respect to horizontal:
+
+$$
+y = \begin{bmatrix} \cos (2\theta) & \sin (2\theta) \\ \sin (2\theta) & -\cos (2\theta) \end{bmatrix}x
+$$
+
+**Projection onto a line** The projection of the point $x$ onto a set is the point in the set that closet to $x$
+
+$$
+y = \begin{bmatrix} (1/2)(1 + \cos(2\theta)) & (1/2)(\sin(2\theta)) \\ (1/2)(\sin(2\theta)) & (1/2)(1 - \cos(2\theta)) \end{bmatrix}x
+$$
+
+**Finding the matrix**: When a geometric transformation is represented by matrix-vector multiplication, a simple method to find the matrix is to find its columns. The $i$-th columns is the vector obtained by applying the transformation to $e_i$
+
+**Change of coordinates** Suppose we are on a plane with three axes point, the 3-vector $x^{\text{body}}$ describes a location using the body coordinates, and $x^{\text{earth}}$ describes the same location in earth-fixed coordinates. Then we have:
+
+$$
+x^{\text{earth}} = p + Qx^{\text{body}}
+$$
+
+where $p$ is the location of the airplane center and $Q$ is a $3\times3$ matrix. The $i$-th column of $Q$ gives the earth-fixed coordinates for the $i$-th axis of the airplane. For an airplane in level flight, heading due South, we have:
+
+$$
+Q = \begin{bmatrix} 0 & 1 & 0 \\ -1 & 0 & 0 \\ 0 & 0 & 1\end{bmatrix}
+$$
+
+
+### 7.2 Selectors matrix
+
+An $m \times n$ selector matrix: each row is a unit vector:
+
+$$
+A = \begin{bmatrix} e_{i_1}^T \\ e_{i_2}^T \\ \vdots \\ e_{i_m}^T \end{bmatrix}
+$$
+
+When it multiplies a vector, it simply copies the $k_{i}th$ entry of $x$ into the $i_{th}$ entry of $y = Ax$:
+
+$$
+y = (x_{k_1}, x_{k_2}, \cdots, x_{k_m})
+$$
+
+In words, each entry of $Ax$ is a selection of an entry of $x$. The identity matrix, and the *reverser matrix* are special cases of the selector matrix.
+
+For slicing matrix:
+
+$$
+A = \begin{bmatrix} 0_{m \times (r - 1)} & I_(m \times m) & 0_{m \times (n - s)} \end{bmatrix}
+$$
+
+Where $m = s - r + 1$. We have $Ax = x_{r:s}$ multiplying by $A$ gives the r:s slice of a vector.
+
+**Down-sampling**. Another example is the $(n / 2) \times n$ matrix (with n odd):
+
+$$
+A = \begin{bmatrix} 1 & 0 & 0 & 0 & \cdots & 0 & 0 \\ 0 & 0 & 1 & 0 & \cdots & 0 & 0 \\ 0 & 0 & 0 & 0 & \cdots & 0 & 1\end{bmatrix}
+$$
+
+If $y = Ax$, we have $y = (x_1, x_3, x_5, \cdots, x_{n - 1})$. When $x$ is a time series, $y$ is called the $2\times$ down-sampled version of $x$.
