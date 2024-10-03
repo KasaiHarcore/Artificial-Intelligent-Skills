@@ -1056,9 +1056,9 @@ $$
 
 **Inner product:** When $a$ and $b$ are vectors of the same length, their inner product is the sum of the products of their corresponding entries. The inner product of $a$ and $b$ is denoted by $a \cdot b$ or $a^Tb$:
 
-**Linear dependence of columns** We can express the conceopts of linear dependence and independence of vectors in terms of matrix-vector multiplication. The columns of a matrix $A$ are linearly dependent if $Ax = 0$ for some $x \neq0$. The columns of a matrix $A$ are linearly independent if $Ax = 0$ implies $x = 0$.
+**Linear dependence of columns:** We can express the conceopts of linear dependence and independence of vectors in terms of matrix-vector multiplication. The columns of a matrix $A$ are linearly dependent if $Ax = 0$ for some $x \neq0$. The columns of a matrix $A$ are linearly independent if $Ax = 0$ implies $x = 0$.
 
-**Expansion in a basis** If the columns of $A$ are a basis, which means $A$ is square with linearly independent columns $a_1, \cdots, a_n$, then for any n-vector $b$ there is a unique n-vector $x$ that satisfies $Ax = b$. In this case, vector $x$ gives the coefficient in the expansion of $b$ in the basis $a_1, \cdots, a_n$.
+**Expansion in a basis:** If the columns of $A$ are a basis, which means $A$ is square with linearly independent columns $a_1, \cdots, a_n$, then for any n-vector $b$ there is a unique n-vector $x$ that satisfies $Ax = b$. In this case, vector $x$ gives the coefficient in the expansion of $b$ in the basis $a_1, \cdots, a_n$.
 
 - Properties of matrix-vector multiplication:
 
@@ -1115,7 +1115,6 @@ $$
 Q = \begin{bmatrix} 0 & 1 & 0 \\ -1 & 0 & 0 \\ 0 & 0 & 1\end{bmatrix}
 $$
 
-
 ### 7.2 Selectors matrix
 
 An $m \times n$ selector matrix: each row is a unit vector:
@@ -1147,3 +1146,51 @@ A = \begin{bmatrix} 1 & 0 & 0 & 0 & \cdots & 0 & 0 \\ 0 & 0 & 1 & 0 & \cdots & 0
 $$
 
 If $y = Ax$, we have $y = (x_1, x_3, x_5, \cdots, x_{n - 1})$. When $x$ is a time series, $y$ is called the $2\times$ down-sampled version of $x$.
+
+**Image cropping** Suppose $x$ is an image with $M \times N$ pixels (both even). Let $y$ be the $(M / 2) \times (N / 2)$ image that is the upper left corner of the image $x$ is a cropped version. Then we have $y = Ax$, where $A$ is an $(MN / 4) \times (MN)$ selector matrix.
+
+**Permutation matrices** An $n \times n$ *permutation matrices* is ine in which each colomns is a unit vector, and each row is transpose of a unit vector. This mean $y = Ax$ can be expressed as $y_i = x_{\pi_i}$, where $\pi$ is a permutation. Example: Consider the permutation $\pi = (3, 1, 2)$, the associated matrix is:
+
+$$
+A = \begin{bmatrix} 0 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix}
+$$
+
+Multiplying a 3-vector by A re-orders its entries
+
+### 7.3 Incidence matrix
+
+**Directed Graph**
+
+A graph with *n* vertices or nodes, m (directed) edges or links. Each edge connected from on of the nodes and into another one. DG are often drawn with vertices as circles or dot, and the edges as arrows.
+
+Incidence matrix is $n \times m$ matrix:
+
+$$
+A_{ij} = \begin{cases} 1 \text{ edge j points to node i} \\
+-1 \text{ edge j points from node i} \\
+0 \text{ otherwise}\end{cases}
+$$
+
+Example with $n = 4$ and $m = 5$ (or in words is 4 vertices 5 edges):
+
+- From node 1: (1, 2), (1, 4)
+- From node 2: (2, 3)
+- From node 3: (3, 4), (3, 1)
+- From node 4: None
+
+Then we will have a matrix:
+
+$$
+A = \begin{bmatrix} -1 & -1 & 0 & 0 & 0 \\ 1 & 0 & -1 & 0 & 0 \\ 0 & 0 & 1 & -1 & -1 \\ 0 & 1 & 0 & 0 & 1\end{bmatrix}
+$$
+
+##### 7.3.1 Networks
+
+**Flow conservation**
+
+- m-vector $x$ gives flows (of something) along the edges
+- examples: heat, money, power, mass, people,...
+- $x_j > 0$ means flow follows edge direction
+- $Ax$ is *n*-vector that gives the total or net flows
+- $(Ax)_i$ is the net flow into node $i$
+- $Ax = 0$ is flow conservation; $x$ called a circulation (From a point follow any edge that go back to that same point)
