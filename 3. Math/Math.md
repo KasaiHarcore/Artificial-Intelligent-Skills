@@ -389,13 +389,14 @@ $$
 For *n-vector* $\vec{x}$, we have:
 
 $$
-\text{avg}(\vec{x}) = \frac{1^Tx}{n}
+\text{avg}(\vec{x}) = \frac{1^Tx}{n} = \mu
+
 $$
 
 Then de-meaned vector is:
 
 $$
-\hat{\vec{x}} = \mu = \vec{x} - \text{avg}(\vec{x}) \vec{1}
+\hat{\vec{x}} = \vec{x} - \text{avg}(\vec{x}) \vec{1}
 $$
 
 Then standard deviation of $\vec{x}$ is:
@@ -450,11 +451,17 @@ $$
 0\leq \| \beta\vec{a} - \alpha\vec{b} \|^2 \\ = \beta^2 \| \vec{a} \|^2 - 2\alpha\beta\vec{a}^T \vec{b} + \alpha^2 \| \vec{b} \|^2 \\ = 2\| \vec{a} \|^2 \| \vec{b} \|^2 - 2 \| \vec{a} \| \| \vec{b} \| (a^Tb)
 $$
 
+Dividing by $2\|a\|\|b\|$ yields $a^Tb \leq \|a\|\|b\|$. And then the final equation will be the same as Cauchy-Schwarz.
+
+**Verification of triangle inequality**
+
 And now we can show triangle inequality based on Cauchy-Schwarz inequality:
 
 $$
 \| \vec{a} + \vec{b} \|^2 = \| \vec{a} \|^2 + \| \vec{b} \|^2 + 2\vec{a}^T \vec{b} \leq (\| \vec{a} + \vec{b} \|)^2
 $$
+
+taking the squareroot and we have equation need to prove.
 
 **Angle between vectors**
 
@@ -470,6 +477,13 @@ The angle between $\vec{a}$ and $\vec{b}$ is written as $\angle(\vec{a}, \vec{b}
 
 $$
 \angle(\vec{a}, \vec{b}) = \angle(\alpha\vec{a}, \beta\vec{b})
+
+$$
+
+In other word, we define $\theta$ as unique number between $0$ and $\pi$ that satisfy:
+
+$$
+a^Tb = \|a\| \|b\| \cos(\theta)
 $$
 
 Relationship between angle and dot product:
@@ -524,7 +538,7 @@ $$
 We can derive a formula for the standard deviation of a sum from:
 
 $$
-\text{std}(\vec{a} + \vec{b}) = \sqrt{\text{std}(\vec{a})^2 + 2p\text{std}(\vec{a})\text{std}(\vec{b}) + \text{std}(\vec{b})^2}
+\text{std}(\vec{a} + \vec{b}) = \sqrt{\text{std}(\vec{a})^2 + 2 p \text{std}(\vec{a})\text{std}(\vec{b}) + \text{std}(\vec{b})^2}
 $$
 
 ### 3.5 Complexity
@@ -549,7 +563,7 @@ For short, we can say:
 
 Let's $G_j \subset ({1, \cdots, N})$ is group $j$ for $j = 1, 2, ..., k$; $c_i$ is group that $x_i$ is in: $i \in G_{c_i}$.
 
-Example: I have 4 number $1,2,3,4$ and I want to divide them into 2 groups. Then $G_1 = \{1, 2\}$ and $G_2 = \{3, 4\}$. With $c_1 = 1$ and $c_2 = 1$.
+Example: I have 4 number $1,2,3,4$ and I want to divide them into 2 groups. Then $G_1 = \{1, 2\}$ and $G_2 = \{3, 4\}$. With $c_1 = 1$ and $c_4 = 2$.
 
 With each group represent *n-vector*. And we want each representative to be close to the vectors in the group. Thus $ \| \vec{x}_i - \vec{z}_j \|$ to be small. Where $\vec{z}_j$ is the representative of group $j$.
 
@@ -589,7 +603,7 @@ K-mean algorithms can be using in many application such as: Classification, Gues
 
 ### 5.1 Linear dependence
 
-Set of *n-vectors* ${a_1, \cdots, a_k}$ (with $k \geq1$) are *linearly independent* if:
+Set of *n-vectors* ${a_1, \cdots, a_k}$ (with $k \geq1$) are *linearly dependent* if:
 
 $$
 \beta_1 a_1 + \cdots + \beta_k a_k = 0
@@ -1188,9 +1202,218 @@ $$
 
 **Flow conservation**
 
-- m-vector $x$ gives flows (of something) along the edges
-- examples: heat, money, power, mass, people,...
-- $x_j > 0$ means flow follows edge direction
-- $Ax$ is *n*-vector that gives the total or net flows
-- $(Ax)_i$ is the net flow into node $i$
-- $Ax = 0$ is flow conservation; $x$ called a circulation (From a point follow any edge that go back to that same point)
+Flow conservation is a fundamental principle in network theory, especially when applied to linear algebra. The main idea is:
+
+- At every node in the network, except the source and sink, the total inflow must equal the total outflow.
+- This ensures that there is no accumulation or loss of flow at intermediate nodes.
+
+Example: Suppose we have a simple network:
+
+- 3 nodes: 1 (source), 2 (middle), 3(sink)
+- 3 Edges:
+  - Edges 1: From 1 to 2
+  - Edges 2: From 2 to 3
+  - Edges 3: From 1 to 3
+
+a) Incidence Matrix $A^T$
+
+$$
+A^T = \begin{bmatrix} 1 & -1 & 0 \\ 0 & 1 & -1 \\ -1 & 0 & 1 \end{bmatrix}
+$$
+
+Where:
+
+- Row represent for node
+- Column represent for edge
+
+b) Flow vector $f$
+
+$$
+f = \begin{pmatrix} f_1 \\ f_2 \\ f_3 \end{pmatrix}
+$$
+
+c) Support vector $b$
+
+$$
+b = \begin{pmatrix} s \\ 0 \\ -t \end{pmatrix}
+$$
+
+- $s$ is total flow supplied at source.
+- $t$ is total flow recieve at sink (frequently $s = t$)
+
+d) Flow conservation
+
+$$
+A^T f = b
+$$
+
+Specific:
+
+- Note 1 (source):
+
+  $$
+  f_1 - f_3 = s
+  $$
+- Note 2 (middle):
+
+  $$
+  -f_1 + f_2 = 0
+  $$
+- Note 3 (sink):
+
+  $$
+  - f_2 + f_3 = -t
+  $$
+
+**Potential and Dirichlet energy**
+
+- Suppose $v$ is an n-vector, called a potential
+- $v_i$ is potential value at node $i$
+- $u = A^Tv $ is an m-vector of potential differences across the m edges
+- $u_j = v_l - v_k$, where edge $j$ gose from $k$ to node $l$
+- Dirichlet energy is $\mathcal{D}(v) = \|A^Tv\|^2$,
+
+  $$
+  \mathcal{D}(v) = \sum_{\text{edges}(k, l)} (v_l - v_k)^2
+  $$
+
+  (sum of squares of potential differences across the edges)
+
+  The Dirichlet energy is used as a measure the non-smoothness (roughness) of a set of node potentials on a graph. A set of node potentials with small Dirichlet energy can be thought of as smoothly varying across the graph. Conversely, a set of potentials with large Dirichlet energy can be thought of as non-smooth or rough.
+- $\mathcal{D}(v)$is small when potential values of neighoring nodes are similar
+
+**Chain graph**
+
+The incidence matrix and the Dirichlet energy function have a particularly simple form for the chain graph with n vertices and $n - 1$ edges. The $n \times (n - 1)$ incidence matrix is the transpose of the difference matrix $D$. The Dirichlet energy is then:
+
+$$
+\mathcal{D}(v) = \|Dv\|^2 = (v_2 - v_1)^2 + \cdots + (v_n - v_{n - 1})^2
+$$
+
+the sum of squares of the differences between consecutive entries of the *n*-vector $v$. This is the measure of the non-smoothness of the vector $v$, considered as a time series.
+
+# 7.4 Convolution
+
+For *n*-vector $a$, *m*-vector $b$, the convolution $c = a * b$ is the $(n + m - 1)$-vector:
+
+$$
+c_k = \sum_{i + j = k + 1} a_ib_j, k = 1, \cdots, n + m - 1
+$$
+
+For example with $n = 4$, $m = 3$, we have:
+
+$$
+c_1 = a_1b_1
+
+$$
+
+$$
+c_2 = a_1b_2 + a_2b_1
+$$
+
+$$
+c_3 = a_1b_3 + a_2b_2 + a_3b_1
+$$
+
+$$
+c_4 = a_2b_3 + a_3b_2 + a_4b_1
+
+$$
+
+$$
+c_5 = a_3b_3 + a_4b_2
+$$
+
+$$
+c_6 = a_4b_3
+$$
+
+Example: $(1, 0, -1) * (2, 1, -1) = (2, 1, -3, -1, 1)$
+
+*Properties:*
+
+- Symmetric: $a * b = b * a$
+- Associative: $(a * b) * c = a * (b * c) = a * b * c$
+- $a * b = 0$ only if $a = 0$ or $b = 0$
+- It's also can be represent in $T(a)b$ which show below
+
+**Polynomial multiplication**:
+
+$a$ and $b$ are coefficients of two polynomials:
+
+$$
+p(x) = a_1 + a_2x + \cdots + a_nx^{n - 1} \\
+q(x) = b_1 + b_2x + \cdots + b_mx^{m - 1}
+$$
+
+Convolution $c = a * b$ gives the coefficients of the product $p(x)q(x)$:
+
+$$
+p(x)q(x) = c_1 + c_2x + \cdots + c_{n + m - 1}x^{n + m - 2}
+$$
+
+This gives simple proofs of many properties of convolution; for example:
+
+$$
+a * b = b * a
+
+$$
+
+$$
+(a * b) * c = a * (b * c)
+$$
+
+$$
+a * b = 0 \text{ only if } a = 0 \text{ or } b = 0
+$$
+
+**Toeplitz matrices**
+
+Can express $c = a * b$ using matrix-vector multiplication as $c = T(b)a$, with:
+
+$$
+T(b) = \begin{bmatrix} b_1 & 0 & 0 & 0 \\ b_2 & b_1 & 0 & 0 \\ b_3 & b_2 & b_1 & 0 \\ 0 & b_3 & b_2 & b_1 \\ 0 & 0 & b_3 & b_2 \\ 0 & 0 & 0 & b_3 
+\end{bmatrix}
+
+$$
+
+$T(b)$ is a Toeplitz matrix (values on diagonals are equal)
+
+**Variations**
+
+Several slightly different definitions of convolution are used in different
+applications. In one variation, $a$ and $b$ are infinite two-sided sequences (and not vectors) with indices ranging from $- \infin$ to $\infin$.  In other variation, the rows of $T(a)$ at the top and bottom that do not contain all the coefficients of $a$ are dropped.
+
+**Example**
+
+- *Time series smoothing*: Convolution $y = a * x$ with $a = (1/3, 1/3, 1/3)$ is 3-period moving average:
+
+$$
+y_k = \frac{1}{3} (x_k + x_{k - 1} + x_{k - 2}) , k = 1, 2, \cdots, n
+$$
+
+- *First order differences*: If the n-vector $x$ is a time series and $a = (1, -1)$, the time series $y = a * x$ gives the first order differences in the series $x$:
+
+  $$
+  y = (x_1, x_2 - x_1, x_3 - x_2, \dots, x_n - x_{n - 1}, - x_n)
+  $$
+- *Audio filtering*: If the *n*-vector $x$ is an audio signal, and $a$ is a vector (typically with length less than around $0.1$ second of real time) the vector $y = a *x$ called the filtered audio signal, with *filter coefficients*.
+- *Communication channel*: In a modern data communication system, a time series $u$ is transmitted or sent over some channel to a receiver, which receiver the time series $y$. A very common model is that $y$ and $u$ are related via convolution: $y = c * u$, where the vector $c$ is the channel impulse response.
+
+**Input-output convolution system**
+
+- *m*-vector $u$ represents a time series input
+- $m + n - 1$ vector $y$ represents a time series output
+- $y = h * u$ is convolution model
+- *n*-vector $h$ is called the system impulse response
+
+We have:
+
+$$
+y_i = \sum_{j = 1}^{n} u_{i - j + 1} h_j
+$$
+
+(interpreting $u_k$ as zero for $k < n$ or $k > n$)
+
+- $y_i$ output at time $i$ is a linear combination of $u_i, \dots, u_{i - n + 1}$
+- Ex: $h_3$ is the factor by which current output depends on what the input was 2 time steps before
