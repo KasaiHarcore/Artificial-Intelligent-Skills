@@ -1,0 +1,108 @@
+# Large collection of different datasets
+
+## Language Understanding Tasks
+
+### Text Classification
+- GLUE Benchmark:
+RTE (Recognizing Textual Entailment): Detect entailment relationships between sentences.
+CoLA (Corpus of Linguistic Acceptability): Evaluate grammatical correctness.
+SST-2 (Stanford Sentiment Treebank): Sentiment analysis.
+MNLI (Multi-Genre Natural Language Inference): Multi-domain language inference.
+QNLI (Question-answering NLI): Answer questions using inference.
+MRPC (Microsoft Research Paraphrase Corpus): Detect sentence paraphrases.
+STS-B (Semantic Textual Similarity Benchmark): Measure semantic similarity between sentences.
+- SuperGLUE (GLUE extention):
+CB (CommitmentBank): Textual entailment.
+COPA (Choice of Plausible Alternatives): Select the correct cause or effect.
+WSC (Winograd Schema Challenge): Coreference resolution.
+MultiRC (Multi-Sentence Reading Comprehension): Multi-sentence reading comprehension.
+ReCoRD (Reading Comprehension with Commonsense Reasoning): Reading comprehension combined with commonsense.
+- AG News: Classify news into categories (e.g., sports, business).
+- TREC: Categorize questions by type (e.g., time, location, people).
+- 20 Newsgroups: Classify text from various news groups.
+
+### Sentiment Analysis
+- IMDB Reviews: Sentiment analysis on movie reviews.
+- Yelp Reviews: Sentiment from restaurant reviews.
+- Sentiment140: Sentiment analysis on tweets.
+- Amazon Reviews: Classify product reviews based on star ratings.
+
+### Narative Understanding
+- ROCStories: Predict the next part of a short story.
+- StoryCloze: Choose the most logical ending to a story.
+
+## Text Generation Tasks
+
+### Free Text Generation
+- WikiText-103: Generate text based on Wikipedia documents.
+- OpenWebText: Data from Reddit-like web pages.
+- Pile: A diverse dataset spanning scientific papers, law, blogs, and more.
+- C4 (Colossal Clean Crawled Corpus): Cleaned data from Common Crawl.
+
+### Text Summarization
+- CNN/DailyMail: Summarize news articles.
+- XSum (Extreme Summarization): Generate concise and compact summaries.
+- Gigaword: Generate sentence summaries for news headlines.
+- BillSum: Summarize U.S. Congressional bills.
+
+### Text Paraphrasing
+- Quora Question Pairs: Detect similar questions.
+- PAWS (Paraphrase Adversarial Dataset): Challenging paraphrase detection tasks.
+- MSRP (Microsoft Paraphrase Corpus): Traditional paraphrasing dataset.
+
+## Question Answering (QA) Tasks
+
+### Contextual Question Answering
+- SQuAD (Stanford Question Answering Dataset):
+SQuAD v1.1: Questions and answers from Wikipedia.
+SQuAD v2.0: Includes unanswerable questions.
+- TriviaQA: Quiz questions with answers from web documents.
+- NaturalQuestions (NQ): Real-life questions from Google searches.
+
+### Open-Domain QA
+- HotpotQA: Multi-hop reasoning questions.
+- SearchQA: QA dataset based on Google search results.
+- WikiQA: QA dataset derived from Wikipedia.
+
+### Commonsense QA
+- CommonsenseQA: Evaluate commonsense knowledge.
+- CosmosQA: Language reasoning using commonsense.
+- OpenBookQA: Tests basic knowledge from textbooks.
+
+## Reasoning Tasks
+
+### Mathematical and Logical Reasoning
+- MATH: Advanced math question dataset.
+- GSM8K: Grade-school-level math problems with step-by-step solutions.
+- AQUA-RAT: Complex reasoning math problems.
+
+### Commonsense Reasoning
+- ARC (AI2 Reasoning Challenge): Science questions from grade-school exams.
+- HellaSwag: Context completion using commonsense reasoning.
+- Social IQa: Evaluates social understanding and reasoning.
+
+### Multi-hop Reasoning
+- HotpotQA: Multi-step reasoning questions.
+- ComplexWebQuestions: Complex questions from web queries.
+- QASC: Reasoning based on science knowledge.
+
+## Machine Translation (MT) Tasks
+- WMT (Workshop on Machine Translation): Covers multiple language pairs (e.g., English- German, English-French, English-Chinese, ...).
+- IWSLT: Translation dataset based on TED Talks.
+- Flores-101: High-quality translation dataset for 101 languages.
+
+## Dialogue Understanding Tasks
+
+### Dialogue Generation
+- DailyDialog: Dataset of everyday conversations.
+- Persona-Chat: Personalized conversations dataset.
+- DSTC (Dialogue State Tracking Challenges): Tracks state in dialogues.
+
+### Dialogue Response Generation
+- ConvAI2: Benchmark for dialogue response generation.
+- MultiWOZ: Multi-domain dialogue dataset.
+
+## Other
+- CodeXGLUE (Programming and Code): Benchmark for code generation and understanding.
+- BEIR (Benchmark for Information Retrieval): Measures the effectiveness of retrieval models.
+- LAMBADA (Language Modeling): Measures accuracy in predicting the final word in a long context.
