@@ -27,26 +27,33 @@ Because the wild world of A.I is so big, I can't cover all of it, so I will focu
     - https://www.paperspace.com
     - https://www.w3schools.com
     - https://www.geeksforgeeks.org
+    - https://www.datacamp.com
 - Data Source:
     - https://data.gov
     - https://data.un.org
     - https://datasetsearch.research.google.com
     - https://datacatalog.worldbank.org/home
-- Free Document Searching:
+    - https://www.kaggle.com
+    - Data paper research (arxiv, meta, google, etc.)
+- Free Document / Model Searching:
     - https://arxiv.org
+    - https://www.kaggle.com
     - https://sci-hub.se
     - https://huggingface.co
     - https://scholar.google.com
-- Programming Practice:
+    - https://ieeexplore.ieee.org
+    - https://www.sciencedirect.com
+    - https://www.mdpi.com
+- Programming Language Practice:
     - https://www.codewars.com
     - https://leetcode.com
     - https://www.hackerrank.com
  
 # 💻: Coding
 - The coding example is not always working all the time; practice is also the key to mastering the coding skill. 
-- Feel free to use ChatGPT, Bard, Claude AI, etc. if you get stuck in the coding part.
+- Feel free to use ChatGPT, Bard, Claude AI, Gemini, Grok, DeepSeek, Perplexity, Poe, etc. if you get stuck in the coding part.
  
-Some code processes can be wrong because I'm still learning, so if you find any mistakes, feel free to fix them. I'll update everything, as long as I still have interest in this major.
+Some code processes can be wrong because I'm still learning, so if you find any mistakes, feel free to fix them. I'll update everything, as long as I still have interest in this major. (For now, I'm on a graduation project!)
 
 **All the code is not completed yet, I will update it as soon as possible.**
 
