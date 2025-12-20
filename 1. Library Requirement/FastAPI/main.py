@@ -1,7 +1,7 @@
 """Single-file FastAPI blog tutorial.
 
 Run with:
-- `uvicorn main:app --reload`
+- `uvicorn main:app`
 - or `fastapi dev main.py`
 
 This file intentionally includes multiple FastAPI concepts:
@@ -28,17 +28,17 @@ from __future__ import annotations
 # `from __future__ import annotations` makes type hints "lazy" (stored as strings).
 # It's helpful for modern typing like `list[BlogOut]` without import cycles.
 
-import asyncio
 from datetime import datetime, timezone
 import time
 import uuid
 from contextlib import asynccontextmanager
-from dataclasses import dataclass
 
-# Available support typing format
-from typing import Any, Optional
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
-import httpx
+
+# -------------------- App lifecycle --------------------
 from fastapi import (
     APIRouter,
     Depends,
@@ -50,14 +50,6 @@ from fastapi import (
     Response,
     status,
 )
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from pydantic import BaseModel, Field
-
-
-# -------------------- App lifecycle --------------------
-
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
@@ -76,10 +68,13 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(
     # These fields show up in the generated docs.
-    title="FastAPI Blog Tutorial",
-    version="1.1.0",
-    description="A single-file blog API demonstrating core FastAPI patterns.",
-    lifespan=lifespan,
+    title = "FastAPI Blog Tutorial",
+    version = "1.1.0",
+    description = "A single-file blog API demonstrating core FastAPI patterns.",
+    lifespan = lifespan,
+    host = "127.0.0.1",
+    port = 8000,
+    reload = True,
 )
 
 
@@ -118,10 +113,9 @@ async def add_request_id_and_timing(request: Request, call_next):
 
 
 # -------------------- Models --------------------
-
-# Pydantic models define:
-# - request bodies (what the client sends)
-# - response shapes (what your API returns)
+# Available support typing format
+from typing import *
+from pydantic import *
 # They also provide validation + clear API docs.
 
 
@@ -184,14 +178,14 @@ class BlogNotFoundError(Exception):
 async def blog_not_found_handler(_: Request, exc: BlogNotFoundError):
     # This converts our plain Python exception into a proper HTTP response.
     return JSONResponse(
-        status_code=status.HTTP_404_NOT_FOUND,
-        content={"detail": "Blog not found", "blog_id": exc.blog_id},
+        status_code = status.HTTP_404_NOT_FOUND,
+        content = {"detail": "Blog not found", "blog_id": exc.blog_id},
     )
 
 
 # -------------------- “DB” layer (in-memory) --------------------
+from dataclasses import dataclass
 
-# This tutorial uses an in-memory store to keep the file simple.
 # Important limitations:
 # - Data resets when the server restarts
 # - Not safe for multi-process deployments
