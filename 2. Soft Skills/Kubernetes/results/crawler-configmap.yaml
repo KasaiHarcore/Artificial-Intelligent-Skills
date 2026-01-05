@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: synergychat-crawler-configmap
+data:
+  CRAWLER_PORT: "8080"
+  CRAWLER_PORT_2: "8081"
+  CRAWLER_PORT_3: "8082"
+  CRAWLER_DB_PATH: "/cache/db"
+  CRAWLER_KEYWORDS: "love,hate,joy,sadness,anger,disgust,fear,surprise"
