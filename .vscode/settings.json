@@ -1,5 +1,6 @@
 {
     "git.ignoreLimitWarning": true,
     "julia.environmentPath": "c:\\Users\\My computer\\Downloads\\School\\Personal Education\\Github\\Artificial-Intelligent-Skills",
-    "python.analysis.autoImportCompletions": true
+    "python.analysis.autoImportCompletions": true,
+    "markdown.validate.enabled": false
 }
